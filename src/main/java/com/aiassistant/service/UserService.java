@@ -4,10 +4,6 @@ import com.aiassistant.model.UserModel;
 
 import java.util.List;
 
-
-/**
- * 业务逻辑层--用户Service
- */
 public interface UserService {
 
     /**
@@ -16,4 +12,35 @@ public interface UserService {
      * @return
      */
     List<UserModel> queryAll();
+
+    /**
+     * 添加用户
+     *
+     * @param user
+     * @return
+     */
+    UserModel addUser(UserModel user);
+
+    /**
+     * 根据用户ID查询用户
+     *
+     * @param id
+     * @return
+     */
+    UserModel getUserById(Integer id);
+
+    /**
+     * 更新用户
+     *
+     * @param user
+     * @return
+     */
+    UserModel updateUser(UserModel user);
+
+    /**
+     * 删除用户
+     *
+     * @param id
+     */
+    void deleteUser(Integer id);
 }

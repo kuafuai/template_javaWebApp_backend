@@ -25,4 +25,36 @@ public interface UserMapper {
      * @return
      */
     List<UserModel> selectAll();
+
+    /**
+     * 插入用户记录
+     *
+     * @param user
+     * @return
+     */
+    int insertUser(UserModel user);
+
+    /**
+     * 根据ID查询用户记录
+     *
+     * @param id
+     * @return
+     */
+    UserModel selectById(Integer id);
+
+    /**
+     * 更新用户记录
+     *
+     * @param user
+     * @return
+     */
+    int updateUser(UserModel user);
+
+    /**
+     * 删除用户记录
+     *
+     * @param id
+     * @return
+     */
+    int deleteUser(Integer id);
 }

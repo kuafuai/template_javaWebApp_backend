@@ -20,7 +20,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserModel> queryAll() {
-
         return userMapper.selectAll();
     }
 }

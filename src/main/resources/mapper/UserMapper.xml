@@ -13,12 +13,39 @@
     <select id="selectOne" resultType="java.util.Map">
         select *
         from wp_users
-                 limit 1
+        limit 1
     </select>
 
     <select id="selectAll" resultMap="allMap">
         select *
         from devllmops.wp_users
     </select>
+
+    <!-- Add the following SQL statements -->
+    <insert id="insertUser" parameterType="com.aiassistant.model.User">
+        insert into wp_users (user_nicename, user_email, user_url, user_status, display_name)
+        values (#{userNiceName}, #{userEmail}, #{userUrl}, #{userStatus}, #{displayName})
+    </insert>
+
+    <select id="selectById" parameterType="Integer" resultMap="allMap">
+        select *
+        from wp_users
+        where id = #{id}
+    </select>
+
+    <update id="updateUser" parameterType="com.aiassistant.model.User">
+        update wp_users
+        set user_nicename = #{userNiceName},
+            user_email = #{userEmail},
+            user_url = #{userUrl},
+            user_status = #{userStatus},
+            display_name = #{displayName}
+        where id = #{id}
+    </update>
+
+    <delete id="deleteUser" parameterType="Integer">
+        delete from wp_users
+        where id = #{id}
+    </delete>
 
 </mapper>
