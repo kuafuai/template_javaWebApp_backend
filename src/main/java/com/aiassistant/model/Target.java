@@ -1,13 +1,1 @@
-package com.aiassistant.model;
-
-import lombok.Data;
-
-/**
- * 实体类--目标
- */
-@Data
-public class Target {
-    private int id;
-    private String targetType;
-    private String targetName;
-}
+创建数据库表target，包括字段id、target_type、target_name。
