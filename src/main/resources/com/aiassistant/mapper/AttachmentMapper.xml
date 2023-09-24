@@ -1,0 +1,4 @@
+<insert id="insertAsset" parameterType="com.aiassistant.model.Asset">
+    INSERT INTO asset (asset_id, name, specification, purchase_date, purchase_price, attachment_id)
+    VALUES (#{asset.assetId}, #{asset.name}, #{asset.specification}, #{asset.purchaseDate}, #{asset.purchasePrice}, #{asset.attachment.attachmentId})
+</insert>
