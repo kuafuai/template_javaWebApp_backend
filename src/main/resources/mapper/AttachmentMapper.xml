@@ -1,0 +1,1 @@
+在com.aiassistant.mapper包下创建AttachmentMapper.xml文件，实现AttachmentMapper接口中定义的方法。
