@@ -3,11 +3,6 @@ package com.aiassistant.utils;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * 控制层-对外返回列表数据结构
- *
- * @param <T>
- */
 public class ResultPageModel<T> {
 
     private Integer totalRecords = 0;
@@ -23,13 +18,6 @@ public class ResultPageModel<T> {
 
     private List<T> list;
 
-    /**
-     * 创建列表返回
-     *
-     * @param list
-     * @param <T>
-     * @return
-     */
     public static <T> ResultPageModel<T> of(List<T> list) {
         ResultPageModel<T> resultPageModel = new ResultPageModel<>(1, list.size());
         resultPageModel.setTotalRecords(list.size());

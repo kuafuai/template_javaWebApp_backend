@@ -15,12 +15,22 @@ public class ResultModel<T> {
     private String msg;
     private Integer code;
 
-    public static <T> ResultModel ofResult(Integer code, String msg, T data) {
-        return ofResult(code, msg, data, null);
-    }
-
-    public static <T> ResultModel ofResult(Integer code, String msg, T data, Exception exception) {
-        ResultModel<T> resultModel = new ResultModel();
+    /**
+     * Create a ResultModel instance with the given code, message, data, and exception.
+     *
+     * @param code      the code of the result
+     * @param msg       the message of the result
+     * @param data      the data of the result
+     * @param exception the exception of the result
+     * @param <T>       the type of the data
+     * @return a ResultModel instance
+     * @throws IllegalArgumentException if the code is null
+     */
+    public static <T> ResultModel<T> ofResult(Integer code, String msg, T data, Exception exception) {
+        if (code == null) {
+            throw new IllegalArgumentException("Code cannot be null");
+        }
+        ResultModel<T> resultModel = new ResultModel<>();
         resultModel.setCode(code);
         resultModel.setData(data);
         resultModel.setMsg(msg);
@@ -29,63 +39,64 @@ public class ResultModel<T> {
     }
 
     /**
-     * 创建成功返回
+     * Create a success ResultModel instance without any data.
      *
-     * @return
+     * @return a ResultModel instance
      */
-    public static ResultModel ofSuccess() {
-
+    public static ResultModel<Void> ofSuccess() {
         return ofSuccess(null);
     }
 
     /**
-     * 创建成功返回-带返回数据
+     * Create a success ResultModel instance with the given data.
      *
-     * @param data
-     * @param <T>
-     * @return
+     * @param data the data of the result
+     * @param <T>  the type of the data
+     * @return a ResultModel instance
      */
-    public static <T> ResultModel ofSuccess(T data) {
-
+    public static <T> ResultModel<T> ofSuccess(T data) {
         return ofSuccess(null, data);
     }
 
     /**
-     * 创建成功返回-带返回信息和返回数据
+     * Create a success ResultModel instance with the given message and data.
      *
-     * @param msg
-     * @param data
-     * @param <T>
-     * @return
+     * @param msg  the message of the result
+     * @param data the data of the result
+     * @param <T>  the type of the data
+     * @return a ResultModel instance
      */
-    public static <T> ResultModel ofSuccess(String msg, T data) {
-
+    public static <T> ResultModel<T> ofSuccess(String msg, T data) {
         return ofResult(0, msg, data);
     }
 
     /**
-     * 创建失败返回
+     * Create an error ResultModel instance without any message or exception.
      *
-     * @return
+     * @return a ResultModel instance
      */
-    public static ResultModel ofError() {
-
+    public static ResultModel<Void> ofError() {
         return ofError(null);
     }
 
     /**
-     * 创建失败返回-带返回信息
+     * Create an error ResultModel instance with the given message.
      *
-     * @param msg
-     * @return
+     * @param msg the message of the result
+     * @return a ResultModel instance
      */
-    public static ResultModel ofError(String msg) {
-
+    public static ResultModel<Void> ofError(String msg) {
         return ofError(msg, null);
     }
 
-    public static ResultModel ofError(String msg, Exception exception) {
-
+    /**
+     * Create an error ResultModel instance with the given message and exception.
+     *
+     * @param msg       the message of the result
+     * @param exception the exception of the result
+     * @return a ResultModel instance
+     */
+    public static ResultModel<Void> ofError(String msg, Exception exception) {
         return ofResult(999, msg, null, exception);
     }
 }
