@@ -6,6 +6,7 @@ import com.aiassistant.utils.ResultPageModel;
 
 /**
  * 业务逻辑层--demo Service
+ * 用于 Demo 演示，请勿直接修改
  */
 public interface DemoService {
 

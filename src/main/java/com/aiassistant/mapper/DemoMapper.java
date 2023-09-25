@@ -8,6 +8,7 @@ import java.util.List;
 
 /**
  * 持久化层--DemoMapper
+ * 用于 Demo 演示，请勿直接修改
  */
 @Mapper
 public interface DemoMapper {
