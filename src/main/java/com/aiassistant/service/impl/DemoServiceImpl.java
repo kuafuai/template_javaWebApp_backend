@@ -21,7 +21,13 @@ public class DemoServiceImpl implements DemoService {
 
     @Override
     public ResultModel<Demo> addDemo(Demo demo) {
+        // 生成唯一的资产编号
+        String assetNumber = generateAssetNumber();
+        demo.setAssetNumber(assetNumber);
+
+        // 将资产信息保存到数据库
         Demo result = demoMapper.insertDemo(demo);
+
         return ResultModel.ofSuccess(result);
     }
 
@@ -32,9 +38,14 @@ public class DemoServiceImpl implements DemoService {
         return ResultPageModel.of(list);
     }
 
-
     @Override
     public Demo getById(Integer id) {
         return demoMapper.selectById(id);
+    }
+
+    private String generateAssetNumber() {
+        // 生成唯一的资产编号的逻辑
+        // ...
+        return "ASSET123456";
     }
 }
