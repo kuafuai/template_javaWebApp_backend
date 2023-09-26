@@ -33,4 +33,13 @@ public interface DemoMapper {
      * @return
      */
     Demo selectById(@Param("id") Integer id);
+    
+    // 添加新方法
+    /**
+     * 根据Id查询
+     *
+     * @param id
+     * @return
+     */
+    Demo selectById(@Param("id") Integer id);
 }
