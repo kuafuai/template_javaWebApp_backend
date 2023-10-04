@@ -4,6 +4,8 @@ import com.aiassistant.model.Attachment;
 import com.aiassistant.utils.ResultModel;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 public interface AttachmentService {
     ResultModel<Attachment> addAttachment(MultipartFile file, String fileType);
 
