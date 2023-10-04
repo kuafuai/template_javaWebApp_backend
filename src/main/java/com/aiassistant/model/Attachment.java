@@ -11,15 +11,13 @@ public class Attachment {
     private Long fileSize;
     private Date createTime;
     private String filePath;
-    private String fileType;
 
-    public Attachment(String id, String fileName, Long fileSize, Date createTime, String filePath, String fileType) {
+    public Attachment(String id, String fileName, Long fileSize, Date createTime, String filePath) {
         this.id = id;
         this.fileName = fileName;
         this.fileSize = fileSize;
         this.createTime = createTime;
         this.filePath = filePath;
-        this.fileType = fileType;
     }
 
     public String getId() {
@@ -60,13 +58,5 @@ public class Attachment {
 
     public void setFilePath(String filePath) {
         this.filePath = filePath;
-    }
-
-    public String getFileType() {
-        return fileType;
-    }
-
-    public void setFileType(String fileType) {
-        this.fileType = fileType;
     }
 }
