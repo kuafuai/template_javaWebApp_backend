@@ -23,12 +23,7 @@ public class AttachmentController {
     @PostMapping("/add")
     public ResponseEntity<ResultModel<Attachment>> addAttachment(@RequestParam("file") MultipartFile file,
                                                                  @RequestParam("name") String name) {
-        if (file.isEmpty()) {
-            return ResponseEntity.badRequest().body(new ResultModel<>("File is required"));
-        }
-        if (name.isEmpty()) {
-            return ResponseEntity.badRequest().body(new ResultModel<>("Name is required"));
-        }
+        
         ResultModel<Attachment> result = attachmentService.addAttachment(file, name);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
@@ -37,33 +32,21 @@ public class AttachmentController {
     public ResponseEntity<ResultModel<Attachment>> updateAttachment(@RequestParam("id") String id,
                                                                     @RequestParam("file") MultipartFile file,
                                                                     @RequestParam("name") String name) {
-        if (id.isEmpty()) {
-            return ResponseEntity.badRequest().body(new ResultModel<>("ID is required"));
-        }
-        if (file.isEmpty()) {
-            return ResponseEntity.badRequest().body(new ResultModel<>("File is required"));
-        }
-        if (name.isEmpty()) {
-            return ResponseEntity.badRequest().body(new ResultModel<>("Name is required"));
-        }
+        
         ResultModel<Attachment> result = attachmentService.updateAttachment(id, file, name);
         return ResponseEntity.ok(result);
     }
 
     @PostMapping("/delete")
     public ResponseEntity<ResultModel<Attachment>> deleteAttachment(@RequestParam("id") String id) {
-        if (id.isEmpty()) {
-            return ResponseEntity.badRequest().body(new ResultModel<>("ID is required"));
-        }
+        
         ResultModel<Attachment> result = attachmentService.deleteAttachment(id);
         return ResponseEntity.ok(result);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ResultModel<Attachment>> getAttachmentById(@PathVariable("id") String id) {
-        if (id.isEmpty()) {
-            return ResponseEntity.badRequest().body(new ResultModel<>("ID is required"));
-        }
+        
         ResultModel<Attachment> result = attachmentService.getAttachmentById(id);
         return ResponseEntity.ok(result);
     }
