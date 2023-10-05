@@ -7,6 +7,4 @@ public interface EmployeeMapper {
     Employee insertEmployee(Employee employee);
     List<Employee> getEmployeeList();
     Employee selectById(String employeeId);
-    void updateEmployee(Employee employee);
-    void deleteEmployee(String employeeId);
 }
