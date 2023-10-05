@@ -10,6 +10,8 @@ import lombok.Data;
 @Data
 public class ResultModel<T> {
 
+    public static final Integer FAIL_CODE = 400;
+    public static final Integer SUCCESS_CODE = 200;
     private Exception exception = null;
     private T data = null;
     private String msg;
@@ -87,5 +89,8 @@ public class ResultModel<T> {
     public static ResultModel ofError(String msg, Exception exception) {
 
         return ofResult(999, msg, null, exception);
+    }
+
+    public void setMessage(String string) {
     }
 }
