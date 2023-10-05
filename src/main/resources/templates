@@ -1,0 +1,71 @@
+package com.aiassistant.controller;
+
+import com.aiassistant.model.Invoice;
+import com.aiassistant.service.InvoiceService;
+import com.aiassistant.utils.ResultModel;
+import com.aiassistant.utils.ResultPageModel;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@RestController
+@RequestMapping("/invoice")
+public class InvoiceController {
+    @Autowired
+    private InvoiceService invoiceService;
+
+    @PostMapping("/create")
+    public ResponseEntity<?> createInvoice(@Valid @RequestBody Invoice invoice, BindingResult result) {
+        if (result.hasErrors()) {
+            Map<String, String> errors = new HashMap<>();
+            for (FieldError error : result.getFieldErrors()) {
+                errors.put(error.getField(), error.getDefaultMessage());
+            }
+            return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+        }
+        ResultModel<Invoice> response = invoiceService.createInvoice(invoice);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/list")
+    public ResponseEntity<?> getInvoiceList(@RequestParam(defaultValue = "0") int page,
+                                            @RequestParam(defaultValue = "10") int size) {
+        ResultPageModel<Invoice> response = invoiceService.getInvoiceList(page, size);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getInvoiceById(@PathVariable Integer id) {
+        ResultModel<Invoice> response = invoiceService.getInvoiceById(id);
+        if (response.getData() == null) {
+            return new ResponseEntity<>("Invoice not found", HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/{id}/pdf")
+    public ResponseEntity<?> generatePdf(@PathVariable Integer id) {
+        ResultModel<String> response = invoiceService.generatePdf(id);
+        if (response.getData() == null) {
+            return new ResponseEntity<>("Invoice not found", HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/{id}/email")
+    public ResponseEntity<?> sendEmail(@PathVariable Integer id) {
+        ResultModel<String> response = invoiceService.sendEmail(id);
+        if (response.getData() == null) {
+            return new ResponseEntity<>("Invoice not found", HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+}

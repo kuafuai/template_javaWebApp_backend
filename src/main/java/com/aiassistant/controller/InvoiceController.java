@@ -1,0 +1,1 @@
+Add methods to the 'com.aiassistant.controller.InvoiceController' class
