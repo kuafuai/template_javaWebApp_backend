@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 控制器层--DemoController
+ * 控制器层--示例接口
  */
 @RestController
 @RequiredArgsConstructor

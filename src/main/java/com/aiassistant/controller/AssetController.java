@@ -6,6 +6,9 @@ import com.aiassistant.utils.ResultModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * 控制器层--资产管理
+ */
 @RestController
 @RequestMapping("/asset")
 public class AssetController {
