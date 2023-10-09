@@ -22,22 +22,22 @@ public class AssetServiceImpl implements AssetService {
         // 校验必填字段
         if (asset.getAssetId() == null || asset.getName() == null || asset.getSpecification() == null ||
                 asset.getPurchaseDate() == null || asset.getPurchasePrice() == null) {
-            return ResultModel.fail("Missing required fields");
+            return ResultModel.ofError("Missing required fields");
         }
 
         // 插入资产信息
         assetMapper.insertAsset(asset);
 
-        return ResultModel.success(asset);
+        return ResultModel.ofSuccess(asset);
     }
 
     @Override
     public ResultModel<Asset> getAssetById(String assetId) {
         Asset asset = assetMapper.selectById(assetId);
         if (asset == null) {
-            return ResultModel.fail("Asset not found");
+            return ResultModel.ofError("Asset not found");
         }
-        return ResultModel.success(asset);
+        return ResultModel.ofSuccess(asset);
     }
 
     @Override
@@ -45,18 +45,18 @@ public class AssetServiceImpl implements AssetService {
         // 校验必填字段
         if (asset.getAssetId() == null || asset.getName() == null || asset.getSpecification() == null ||
                 asset.getPurchaseDate() == null || asset.getPurchasePrice() == null) {
-            return ResultModel.fail("Missing required fields");
+            return ResultModel.ofError("Missing required fields");
         }
 
         // 更新资产信息
         assetMapper.updateAsset(asset);
 
-        return ResultModel.success(asset);
+        return ResultModel.ofSuccess(asset);
     }
 
     @Override
     public ResultModel<Asset> deleteAssetById(String assetId) {
         assetMapper.deleteById(assetId);
-        return ResultModel.success();
+        return ResultModel.ofSuccess();
     }
 }
