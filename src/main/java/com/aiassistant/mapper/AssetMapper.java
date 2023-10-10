@@ -24,4 +24,13 @@ public interface AssetMapper {
 
     @Delete("DELETE FROM asset WHERE asset_id = #{assetId}")
     void deleteById(String assetId);
+
+    /**
+     * 根据资产编号查询资产信息
+     *
+     * @param assetNumber
+     * @return
+     */
+    @Select("SELECT * FROM asset WHERE asset_number = #{assetNumber}")
+    Asset selectByNumber(String assetNumber);
 }

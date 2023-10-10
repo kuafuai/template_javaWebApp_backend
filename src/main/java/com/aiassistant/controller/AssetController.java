@@ -38,4 +38,9 @@ public class AssetController {
     public ResultModel<Asset> deleteAssetById(@PathVariable String assetId) {
         return assetService.deleteAssetById(assetId);
     }
+
+    @PostMapping("/assign")
+    public ResultModel<Asset> assignAsset(@RequestParam String assignDate, @RequestParam String employeeId, @RequestParam String assetId) {
+        return assetService.assignAsset(assignDate, employeeId, assetId);
+    }
 }

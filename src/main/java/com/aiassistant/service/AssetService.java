@@ -11,4 +11,6 @@ public interface AssetService {
     ResultModel<Asset> updateAsset(Asset asset);
 
     ResultModel<Asset> deleteAssetById(String assetId);
+
+    ResultModel<Asset> assignAsset(String assignDate, String employeeId, String assetId);
 }

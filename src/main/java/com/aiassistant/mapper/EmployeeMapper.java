@@ -23,4 +23,13 @@ public interface EmployeeMapper {
 
     @Delete("DELETE FROM employee WHERE employee_id = #{employeeId}")
     void deleteById(String employeeId);
+    
+    /**
+     * 根据员工工号查询员工信息
+     *
+     * @param employeeId
+     * @return
+     */
+    @Select("SELECT * FROM employee WHERE employee_id = #{employeeId}")
+    Employee selectById(String employeeId);
 }
