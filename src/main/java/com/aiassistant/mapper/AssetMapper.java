@@ -9,6 +9,12 @@ public interface AssetMapper {
             "VALUES(#{assetId}, #{name}, #{specification}, #{purchaseDate}, #{purchasePrice})")
     void insertAsset(Asset asset);
 
+    /**
+     * 根据资产Id查询资产信息
+     *
+     * @param assetId
+     * @return
+     */
     @Select("SELECT * FROM asset WHERE asset_id = #{assetId}")
     Asset selectById(String assetId);
 

@@ -9,6 +9,12 @@ public interface EmployeeMapper {
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void insertEmployee(Employee employee);
 
+    /**
+     * 根据员工编号查询员工信息
+     *
+     * @param employeeId
+     * @return
+     */
     @Select("SELECT * FROM employee WHERE employee_id = #{employeeId}")
     Employee selectById(String employeeId);
 
