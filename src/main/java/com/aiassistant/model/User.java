@@ -1,0 +1,1 @@
+在`com.aiassistant.model.User`文件中定义`User`实体类
