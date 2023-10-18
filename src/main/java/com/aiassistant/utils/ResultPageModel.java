@@ -3,11 +3,6 @@ package com.aiassistant.utils;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * 控制层-对外返回列表数据结构
- *
- * @param <T>
- */
 public class ResultPageModel<T> {
 
     private Integer totalRecords = 0;
@@ -23,39 +18,19 @@ public class ResultPageModel<T> {
 
     private List<T> list;
 
-    /**
-     * 创建列表返回
-     *
-     * @param list
-     * @param <T>
-     * @return
-     */
     public static <T> ResultPageModel<T> of(List<T> list) {
-        ResultPageModel<T> resultPageModel = new ResultPageModel<>(1, list.size());
+        ResultPageModel<T> resultPageModel = new ResultPageModel<>();
         resultPageModel.setTotalRecords(list.size());
         resultPageModel.setList(list);
         return resultPageModel;
-    }
-
-    public ResultPageModel(Integer pageNo, Integer pageSize) {
-        if (pageNo == null || pageNo < 1) {
-            pageNo = 1;
-        }
-        if (pageSize == null || pageSize < 10) {
-            pageSize = 10;
-        }
-        this.pageNo = pageNo;
-        this.pageSize = pageSize;
-        this.list = Collections.emptyList();
-        this.firstIndex = (pageNo - 1) * pageSize;
     }
 
     public Integer getTotalRecords() {
         return totalRecords;
     }
 
-    public void setTotalRecords(Integer count) {
-        this.totalRecords = count;
+    public void setTotalRecords(Integer totalRecords) {
+        this.totalRecords = totalRecords;
         if (totalRecords != 0) {
             if (totalRecords % pageSize == 0) {
                 totalPage = totalRecords / pageSize;
@@ -69,11 +44,11 @@ public class ResultPageModel<T> {
         return pageNo;
     }
 
-    public void setPageNo(Integer pageNumber) {
-        if (pageNumber < 1) {
-            pageNumber = 1;
+    public void setPageNo(Integer pageNo) {
+        if (pageNo < 1) {
+            pageNo = 1;
         }
-        this.pageNo = pageNumber;
+        this.pageNo = pageNo;
     }
 
     public Integer getPageSize() {
