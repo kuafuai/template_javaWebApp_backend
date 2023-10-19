@@ -1,16 +1,36 @@
 package com.aiassistant.model;
 
 import java.math.BigDecimal;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 public class User {
+    @NotBlank(message = "User ID cannot be blank")
     private String userId;
+    
+    @NotBlank(message = "Name cannot be blank")
     private String name;
+    
+    @NotBlank(message = "ID card number cannot be blank")
+    @Pattern(regexp = "\\d{17}[\\d|x]|\\d{15}", message = "Invalid ID card number")
     private String idCard;
+    
+    @NotBlank(message = "Password cannot be blank")
     private String password;
-    private String gender;
-    private String ethnicity;
+    
+    @NotNull(message = "Gender cannot be null")
+    private Gender gender;
+    
+    @NotNull(message = "Ethnicity cannot be null")
+    private Ethnicity ethnicity;
+    
     private BigDecimal balance;
+    
     private String remark;
+    
+    @Pattern(regexp = "\\d{3}-\\d{3}-\\d{4}", message = "Invalid phone number")
+    private String phone;
 
     public String getUserId() {
         return userId;
@@ -44,19 +64,19 @@ public class User {
         this.password = password;
     }
 
-    public String getGender() {
+    public Gender getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
     }
 
-    public String getEthnicity() {
+    public Ethnicity getEthnicity() {
         return ethnicity;
     }
 
-    public void setEthnicity(String ethnicity) {
+    public void setEthnicity(Ethnicity ethnicity) {
         this.ethnicity = ethnicity;
     }
 
@@ -74,5 +94,21 @@ public class User {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+    
+    public enum Gender {
+        MALE, FEMALE
+    }
+    
+    public enum Ethnicity {
+        HAN, MONGOL, TIBETAN, UYGHUR, ZHUANG, OTHER
     }
 }

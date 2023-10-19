@@ -12,22 +12,59 @@ public class UserServiceImpl {
     private UserMapper userMapper;
 
     public ResultModel<User> addUser(User user) {
-        // TODO: Implement the logic to add a user record
-        return null;
+        int count = userMapper.addUser(user);
+        if (count > 0) {
+            return ResultModel.ofSuccess(user);
+        } else {
+            return ResultModel.ofError("Failed to add user");
+        }
     }
 
     public ResultModel<User> getUserById(String userId) {
-        // TODO: Implement the logic to get a user record by ID
-        return null;
+        if (userId == null || userId.isEmpty()) {
+            return ResultModel.ofError("Invalid userId");
+        }
+        User user = userMapper.getUserById(userId);
+        if (user != null) {
+            return ResultModel.ofSuccess(user);
+        } else {
+            return ResultModel.ofError("User not found");
+        }
     }
 
     public ResultModel<User> updateUser(User user) {
-        // TODO: Implement the logic to update a user record
-        return null;
+        int count = userMapper.updateUser(user);
+        if (count > 0) {
+            return ResultModel.ofSuccess(user);
+        } else {
+            return ResultModel.ofError("Failed to update user");
+        }
     }
 
     public ResultModel<User> deleteUser(String userId) {
-        // TODO: Implement the logic to delete a user record
-        return null;
+        int count = userMapper.deleteUser(userId);
+        if (count > 0) {
+            return ResultModel.ofSuccess();
+        } else {
+            return ResultModel.ofError("Failed to delete user");
+        }
+    }
+
+    public ResultModel<User> changePassword(String userId, String newPassword) {
+        int count = userMapper.changePassword(userId, newPassword);
+        if (count > 0) {
+            return ResultModel.ofSuccess();
+        } else {
+            return ResultModel.ofError("Failed to change password");
+        }
+    }
+
+    public ResultModel<User> changePhoneNumber(String userId, String newPhoneNumber) {
+        int count = userMapper.changePhoneNumber(userId, newPhoneNumber);
+        if (count > 0) {
+            return ResultModel.ofSuccess();
+        } else {
+            return ResultModel.ofError("Failed to change phone number");
+        }
     }
 }

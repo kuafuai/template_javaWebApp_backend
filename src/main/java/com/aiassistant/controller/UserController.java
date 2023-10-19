@@ -6,6 +6,8 @@ import com.aiassistant.utils.ResultModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -18,7 +20,7 @@ public class UserController {
     }
 
     @PostMapping("/add")
-    public ResultModel<User> addUser(@RequestBody User user) {
+    public ResultModel<User> addUser(@Valid @RequestBody User user) {
         return userService.addUser(user);
     }
 
@@ -28,12 +30,22 @@ public class UserController {
     }
 
     @PutMapping("/update")
-    public ResultModel<User> updateUser(@RequestBody User user) {
+    public ResultModel<User> updateUser(@Valid @RequestBody User user) {
         return userService.updateUser(user);
     }
 
     @DeleteMapping("/{userId}")
     public ResultModel<User> deleteUser(@PathVariable String userId) {
         return userService.deleteUser(userId);
+    }
+
+    @PostMapping("/changePassword")
+    public ResultModel<User> changePassword(@Valid @RequestBody User user) {
+        return userService.changePassword(user);
+    }
+
+    @PostMapping("/changePhoneNumber")
+    public ResultModel<User> changePhoneNumber(@Valid @RequestBody User user) {
+        return userService.changePhoneNumber(user);
     }
 }
