@@ -5,10 +5,15 @@ import com.aiassistant.service.FoodService;
 import com.aiassistant.utils.ResultModel;
 import com.aiassistant.utils.ResultPageModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 
 @RestController
 @RequestMapping("/food")
+@Validated
 public class FoodController {
     private final FoodService foodService;
 
@@ -18,16 +23,7 @@ public class FoodController {
     }
 
     @PostMapping("/add")
-    public ResultModel addFood(@RequestBody Food food) {
-        // 校验请求体参数
-        if (food.getName() == null || food.getName().isEmpty() ||
-                food.getImage() == null || food.getImage().isEmpty() ||
-                food.getCategoryId() == null || food.getCategoryId() <= 0 ||
-                food.getPrice() == null || food.getPrice().compareTo(0) <= 0) {
-            return ResultModel.ofError("Invalid request body");
-        }
-
-        // 创建新的餐品信息，并保存到数据库中
+    public ResultModel addFood(@Valid @RequestBody Food food) {
         ResultModel result = foodService.addFood(food);
         if (result.getCode() == 0) {
             return ResultModel.ofSuccess("Food added successfully", result.getData());
@@ -37,13 +33,7 @@ public class FoodController {
     }
 
     @PostMapping("/delete")
-    public ResultModel deleteFood(@RequestParam Integer foodId) {
-        // 校验foodId
-        if (foodId == null || foodId <= 0) {
-            return ResultModel.ofError("Invalid foodId");
-        }
-
-        // 根据foodId从数据库中删除对应的餐品信息
+    public ResultModel deleteFood(@Positive @RequestParam Integer foodId) {
         ResultModel result = foodService.deleteFood(foodId);
         if (result.getCode() == 0) {
             return ResultModel.ofSuccess("Food deleted successfully");
@@ -53,19 +43,12 @@ public class FoodController {
     }
 
     @PostMapping("/update")
-    public ResultModel updateFood(@RequestParam Integer foodId, @RequestBody Food food) {
-        // 校验foodId
-        if (foodId == null || foodId <= 0) {
-            return ResultModel.ofError("Invalid foodId");
-        }
-
-        // 根据foodId从数据库中查询对应的餐品信息
+    public ResultModel updateFood(@Positive @RequestParam Integer foodId, @Valid @RequestBody Food food) {
         ResultModel<Food> result = foodService.getFoodById(foodId);
         if (result.getCode() != 0) {
             return ResultModel.ofError("Failed to update food");
         }
 
-        // 更新餐品信息，并保存到数据库中
         Food existingFood = result.getData();
         existingFood.setName(food.getName());
         existingFood.setImage(food.getImage());
@@ -83,8 +66,7 @@ public class FoodController {
     }
 
     @GetMapping("/listByCategory")
-    public ResultPageModel<Food> getFoodListByCategory(@RequestParam Integer categoryId) {
-        // 根据categoryId从数据库中查询对应分类下的餐品信息
+    public ResultPageModel<Food> getFoodListByCategory(@Positive @RequestParam Integer categoryId) {
         ResultPageModel<Food> result = foodService.getFoodListByCategory(categoryId);
         if (result.getCode() == 0) {
             return result;
@@ -95,7 +77,6 @@ public class FoodController {
 
     @GetMapping("/listAll")
     public ResultPageModel<Food> getAllFoodList() {
-        // 从数据库中查询所有餐品信息
         ResultPageModel<Food> result = foodService.getAllFoodList();
         if (result.getCode() == 0) {
             return result;

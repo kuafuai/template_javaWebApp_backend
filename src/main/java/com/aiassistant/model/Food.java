@@ -4,11 +4,11 @@ import java.math.BigDecimal;
 
 public class Food {
     private int foodId;
-    private String name;
-    private String image;
-    private int categoryId;
-    private BigDecimal price;
-    private String remark;
+    private String foodName;
+    private String foodImage;
+    private int foodCategoryId;
+    private BigDecimal foodPrice;
+    private String foodRemark;
     private String otherParams;
 
     public int getFoodId() {
@@ -19,44 +19,44 @@ public class Food {
         this.foodId = foodId;
     }
 
-    public String getName() {
-        return name;
+    public String getFoodName() {
+        return foodName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFoodName(String foodName) {
+        this.foodName = foodName;
     }
 
-    public String getImage() {
-        return image;
+    public String getFoodImage() {
+        return foodImage;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setFoodImage(String foodImage) {
+        this.foodImage = foodImage;
     }
 
-    public int getCategoryId() {
-        return categoryId;
+    public int getFoodCategoryId() {
+        return foodCategoryId;
     }
 
-    public void setCategoryId(int categoryId) {
-        this.categoryId = categoryId;
+    public void setFoodCategoryId(int foodCategoryId) {
+        this.foodCategoryId = foodCategoryId;
     }
 
-    public BigDecimal getPrice() {
-        return price;
+    public BigDecimal getFoodPrice() {
+        return foodPrice;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
+    public void setFoodPrice(BigDecimal foodPrice) {
+        this.foodPrice = foodPrice;
     }
 
-    public String getRemark() {
-        return remark;
+    public String getFoodRemark() {
+        return foodRemark;
     }
 
-    public void setRemark(String remark) {
-        this.remark = remark;
+    public void setFoodRemark(String foodRemark) {
+        this.foodRemark = foodRemark;
     }
 
     public String getOtherParams() {
