@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class FoodService {
@@ -38,7 +39,7 @@ public class FoodService {
 
     public List<FoodDto> getAllFoods() {
         return foodMapper.selectAllFoods().stream()
-                .map(Food::toFoodDto)
+                .map(FoodDto::toFoodDto)
                 .collect(Collectors.toList());
     }
 }
