@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.FoodMapper">
+
+    <insert id="insertFood" parameterType="com.example.model.Food">
+        INSERT INTO food (food_code, name, description_title, description, image, status, category_id, original_price, current_price, discount, creator, create_time, modifier, modify_time, remark, deleted)
+        VALUES (#{foodCode}, #{name}, #{descriptionTitle}, #{description}, #{image}, #{status}, #{categoryId}, #{originalPrice}, #{currentPrice}, #{discount}, #{creator}, #{createTime}, #{modifier}, #{modifyTime}, #{remark}, #{deleted})
+    </insert>
+
+    <select id="selectFoodById" parameterType="int" resultType="com.example.model.Food">
+        SELECT * FROM food WHERE food_id = #{foodId}
+    </select>
+
+    <update id="updateFood" parameterType="com.example.model.Food">
+        UPDATE food SET
+        food_code = #{foodCode},
+        name = #{name},
+        description_title = #{descriptionTitle},
+        description = #{description},
+        image = #{image},
+        status = #{status},
+        category_id = #{categoryId},
+        original_price = #{originalPrice},
+        current_price = #{currentPrice},
+        discount = #{discount},
+        creator = #{creator},
+        create_time = #{createTime},
+        modifier = #{modifier},
+        modify_time = #{modifyTime},
+        remark = #{remark},
+        deleted = #{deleted}
+        WHERE food_id = #{foodId}
+    </update>
+
+    <delete id="deleteFood" parameterType="int">
+        DELETE FROM food WHERE food_id = #{foodId}
+    </delete>
+
+    <select id="selectAllFoods" resultType="com.example.model.Food">
+        SELECT * FROM food
+    </select>
+
+</mapper>
