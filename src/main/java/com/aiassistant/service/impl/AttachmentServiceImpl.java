@@ -20,16 +20,16 @@ public class AttachmentServiceImpl implements AttachmentService {
     @Override
     public ResultModel<Attachment> addAttachment(Attachment attachment) {
         attachmentMapper.insertAttachment(attachment);
-        return new ResultModel<>(attachment);
+        return ResultModel.ofSuccess(attachment);
     }
 
     @Override
     public ResultModel<Attachment> getAttachmentById(Integer id) {
         Attachment attachment = attachmentMapper.selectById(id);
         if (attachment != null) {
-            return new ResultModel<>(attachment);
+            return ResultModel.ofSuccess(attachment);
         } else {
-            return new ResultModel<>(ResultModel.FAIL, "Attachment not found");
+            return ResultModel.ofError("Attachment not found");
         }
     }
 }
