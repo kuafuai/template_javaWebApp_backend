@@ -83,7 +83,7 @@ public class AssetServiceImpl implements AssetService {
         AssetAssign assetAssign = new AssetAssign();
         assetAssign.setAssignDate(assignDate);
         assetAssign.setEmployeeId(employeeId);
-        assetAssign.setAssetId(assetId);
+        assetAssign.setAssetNumber(assetId);
         assetAssignMapper.insertAssetAssign(assetAssign);
 
         return ResultModel.ofSuccess("Asset assigned successfully");
