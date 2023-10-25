@@ -19,46 +19,24 @@ public class CableServiceImpl implements CableService {
     }
 
     @Override
-    public ResultModel<Long> addCable(Cable cable) {
+    public ResultModel addCable(Cable cable) {
         cableMapper.insertCable(cable);
-        return new ResultModel<>(cable.getId());
+        return ResultModel.ofSuccess(cable);
     }
 
     @Override
     public ResultPageModel<Cable> getCableList() {
-        return new ResultPageModel<>(cableMapper.getCableList());
+        return ResultPageModel.of(cableMapper.getCableList());
     }
 
     @Override
-    public ResultModel<Cable> getCableById(Long id) {
+    public ResultModel<Cable> getCableById(Integer id) {
         Cable cable = cableMapper.selectById(id);
         if (cable != null) {
-            return new ResultModel<>(cable);
+            return ResultModel.ofSuccess(cable);
         } else {
-            return new ResultModel<>("Cable not found");
+            return ResultModel.ofError("Cable not found");
         }
     }
 
-    @Override
-    public ResultModel<Cable> updateCable(Long id, Cable cable) {
-        Cable existingCable = cableMapper.selectById(id);
-        if (existingCable != null) {
-            cable.setId(id);
-            cableMapper.updateCable(cable);
-            return new ResultModel<>(cable);
-        } else {
-            return new ResultModel<>("Cable not found");
-        }
-    }
-
-    @Override
-    public ResultModel<String> deleteCable(Long id) {
-        Cable existingCable = cableMapper.selectById(id);
-        if (existingCable != null) {
-            cableMapper.deleteCable(id);
-            return new ResultModel<>("Cable deleted successfully");
-        } else {
-            return new ResultModel<>("Cable not found");
-        }
-    }
 }

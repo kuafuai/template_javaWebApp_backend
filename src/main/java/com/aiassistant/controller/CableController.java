@@ -19,7 +19,7 @@ public class CableController {
     }
 
     @PostMapping("/add")
-    public ResultModel<Long> addCable(@RequestBody Cable cable) {
+    public ResultModel addCable(@RequestBody Cable cable) {
         return cableService.addCable(cable);
     }
 
@@ -29,17 +29,8 @@ public class CableController {
     }
 
     @GetMapping("/{id}")
-    public ResultModel<Cable> getCableById(@PathVariable Long id) {
+    public ResultModel<Cable> getCableById(@PathVariable Integer id) {
         return cableService.getCableById(id);
     }
 
-    @PutMapping("/{id}")
-    public ResultModel<Cable> updateCable(@PathVariable Long id, @RequestBody Cable cable) {
-        return cableService.updateCable(id, cable);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResultModel<String> deleteCable(@PathVariable Long id) {
-        return cableService.deleteCable(id);
-    }
 }
