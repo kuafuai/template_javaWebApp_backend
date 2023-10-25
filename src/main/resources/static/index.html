@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="semantic/semantic.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="semantic/semantic.min.js"></script>
+    <style>
+        .center {
+            text-align: center;
+        }
+        .center-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+<div class="center center-content">
+    <div class="ui segment">
+        <h3>Upload a File</h3>
+        <form method="post" action="/cable/upload" enctype="multipart/form-data">
+            <div class="ui action input">
+                <input type="file" name="file">
+                <button class="ui primary button" type="submit">Upload</button>
+            </div>
+        </form>
+
+        <h3>Data List</h3>
+        <table class="ui celled table">
+            <thead>
+            <tr>
+                <th>项目</th>
+                <th>产品编码</th>
+                <th>产品名称</th>
+                <th>子件编码</th>
+                <th>线缆规格型号</th>
+                <th>线号（+-）</th>
+                <th>长度/mm</th>
+                <th>左剥外皮/mm</th>
+                <th>左剥内皮/mm</th>
+                <th>右剥外皮/mm</th>
+                <th>右剥内皮/mm</th>
+                <th>标记/喷码</th>
+                <th>左剥外皮/mm</th>
+                <th>左屏蔽处理/mm</th>
+                <th>左剥内皮/mm</th>
+                <th>右剥外皮/mm</th>
+                <th>右屏蔽处理/mm</th>
+                <th>右剥内皮/mm</th>
+            </tr>
+            </thead>
+            <tbody id="data-table-body">
+            <!-- Data will be dynamically populated here -->
+            </tbody>
+        </table>
+
+
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        // Make an AJAX GET request to the API
+        $.get("/cable/list", function(data) {
+            // Clear any existing list items
+            console.log(data)
+            $("#data-table-body").empty();
+            const tableBody = document.getElementById('data-table-body');
+            // Iterate through the data and create list items
+            $.each(data.list, function(index, item) {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.projectNumber}</td>
+                    <td>${item.productCode}</td>
+                    <td>${item.productName}</td>
+                    <td>${item.componentCode}</td>
+                    <td>${item.cableSpecification}</td>
+                    <td>${item.lineNumber}</td>
+                    <td>${item.length}</td>
+                    <td>${item.leftPeelOuter}</td>
+                    <td>${item.leftPeelInner}</td>
+                    <td>${item.rightPeelOuter}</td>
+                    <td>${item.rightPeelInner}</td>
+                    <td>${item.sprayCode}</td>
+                    <td>${item.leftPeelOuterProcess}</td>
+                    <td>${item.leftShieldProcess}</td>
+                    <td>${item.leftPeelInnerProcess}</td>
+                    <td>${item.rightPeelOuterProcess}</td>
+                    <td>${item.rightShieldProcess}</td>
+                    <td>${item.rightPeelInnerProcess}</td>
+                  `;
+                tableBody.appendChild(row);
+                //$("#data-list").append("<li class='item'>" + item.name + "</li>");
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
