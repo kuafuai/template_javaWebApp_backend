@@ -6,6 +6,7 @@ import com.aiassistant.utils.ResultModel;
 import com.aiassistant.utils.ResultPageModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/cable")
@@ -31,6 +32,12 @@ public class CableController {
     @GetMapping("/{id}")
     public ResultModel<Cable> getCableById(@PathVariable Integer id) {
         return cableService.getCableById(id);
+    }
+
+    @PostMapping("/upload")
+    public ResultModel uploadFile(@RequestParam("file") MultipartFile file) {
+
+        return cableService.uploadExcel(file);
     }
 
 }
