@@ -1,0 +1,21 @@
+CREATE TABLE cable (
+                       id INTEGER PRIMARY KEY AUTOINCREMENT,
+                       project_number TEXT,
+                       product_code TEXT,
+                       product_name TEXT,
+                       component_code TEXT,
+                       cable_specification TEXT,
+                       line_number TEXT,
+                       length TEXT,
+                       left_peel_outer TEXT,
+                       left_peel_inner TEXT,
+                       right_peel_outer TEXT,
+                       right_peel_inner TEXT,
+                       spray_code TEXT,
+                       left_peel_outer_process TEXT,
+                       left_shield_process TEXT,
+                       left_peel_inner_process TEXT,
+                       right_peel_outer_process TEXT,
+                       right_shield_process TEXT,
+                       right_peel_inner_process TEXT
+);

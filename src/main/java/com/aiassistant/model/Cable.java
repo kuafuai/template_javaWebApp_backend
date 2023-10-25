@@ -12,7 +12,7 @@ public class Cable {
     private String componentCode;
     private String cableSpecification;
     private String lineNumber;
-    private Double length;
+    private String length;
     private String leftPeelOuter;
     private String leftPeelInner;
     private String rightPeelOuter;
