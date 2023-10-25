@@ -50,6 +50,7 @@
                 <th>右剥外皮/mm</th>
                 <th>右屏蔽处理/mm</th>
                 <th>右剥内皮/mm</th>
+                <th>操作</th>
             </tr>
             </thead>
             <tbody id="data-table-body">
@@ -91,6 +92,7 @@
                     <td>${item.rightPeelOuterProcess}</td>
                     <td>${item.rightShieldProcess}</td>
                     <td>${item.rightPeelInnerProcess}</td>
+                    <td><a href="/detail.html?id=${item.id}">详情</a></td>
                   `;
                 tableBody.appendChild(row);
                 //$("#data-list").append("<li class='item'>" + item.name + "</li>");

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="semantic/semantic.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="semantic/semantic.min.js"></script>
+    <style>
+        .center {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="center center-content">
+    <table class="ui celled table">
+        <thead>
+            <tr>
+                <th style="text-align: center">基础信息</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <table class="ui celled table">
+                        <thead>
+                            <tr>
+                                <th>项目</th>
+                                <th>产品料号</th>
+                                <th>产品名称</th>
+                                <th>生产数量</th>
+                                <th>子件编码</th>
+                                <th>线缆规格型号</th>
+                                <th>线号（+-）</th>
+                            </tr>
+                        </thead>
+                        <tbody id="base-info"></tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+<div class="center center-content">
+    <table class="ui celled table">
+        <thead>
+        <tr>
+            <th style="text-align: center">切线工艺参数</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>
+                <table class="ui celled table">
+                    <thead>
+                    <tr>
+                        <th>长度mm</th>
+                        <th>左剥外皮mm</th>
+                        <th>左剥内皮mm</th>
+                        <th>右剥外皮mm</th>
+                        <th>右剥内皮mm</th>
+                        <th>标记/喷码</th>
+                    </tr>
+                    </thead>
+                    <tbody id="peel-info"></tbody>
+                </table>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="center center-content">
+    <table class="ui celled table">
+        <thead>
+        <tr>
+            <th style="text-align: center">线缆处理工艺参数</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>
+                <table class="ui celled table">
+                    <thead>
+                    <tr>
+                        <th>左剥外皮mm</th>
+                        <th>左屏蔽处理mm</th>
+                        <th>左剥内皮mm</th>
+                        <th>右剥外皮mm</th>
+                        <th>右屏蔽处理mm</th>
+                        <th>右剥内皮mm</th>
+                    </tr>
+                    </thead>
+                    <tbody id="process-info"></tbody>
+                </table>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<script>
+    // Function to parse URL parameters
+    function getUrlParameters() {
+        var parameters = {};
+        var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
+            parameters[key] = decodeURIComponent(value);
+        });
+        return parameters;
+    }
+
+    $(document).ready(function () {
+        // Get the URL parameters
+        var params = getUrlParameters();
+
+        console.log(params)
+
+        $.get("/cable/"+params["id"], function(data) {
+
+            console.log(data)
+
+            const baseBody = document.getElementById('base-info');
+            const peelBody = document.getElementById('peel-info');
+            const processBody = document.getElementById('process-info');
+
+            const base_row = document.createElement('tr');
+            base_row.innerHTML = `
+                    <td>${data.data.projectNumber}</td>
+                    <td>${data.data.productCode}</td>
+                    <td>${data.data.productName}</td>
+                    <td>0</td>
+                    <td>${data.data.componentCode}</td>
+                    <td>${data.data.cableSpecification}</td>
+                    <td>${data.data.lineNumber}</td>
+                  `;
+
+            baseBody.appendChild(base_row);
+
+
+            const peel_row = document.createElement('tr');
+            peel_row.innerHTML = `<td>${data.data.length}</td>
+                    <td>${data.data.leftPeelOuter}</td>
+                    <td>${data.data.leftPeelInner}</td>
+                    <td>${data.data.rightPeelOuter}</td>
+                    <td>${data.data.rightPeelInner}</td>
+                    <td>${data.data.sprayCode}</td>`;
+
+            peelBody.appendChild(peel_row);
+
+            const process_row = document.createElement('tr');
+            process_row.innerHTML = `<td>${data.data.leftPeelOuterProcess}</td>
+                    <td>${data.data.leftShieldProcess}</td>
+                    <td>${data.data.leftPeelInnerProcess}</td>
+                    <td>${data.data.rightPeelOuterProcess}</td>
+                    <td>${data.data.rightShieldProcess}</td>
+                    <td>${data.data.rightPeelInnerProcess}</td>`;
+
+            processBody.appendChild(process_row);
+
+        })
+
+    });
+</script>
+</body>
+</html>
