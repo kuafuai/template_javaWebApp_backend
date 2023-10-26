@@ -7,6 +7,8 @@ import com.aiassistant.utils.ResultModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 @Service
 public class StoreServiceImpl implements StoreService {
 
@@ -20,6 +22,7 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public ResultModel<Store> addStore(Store store) {
         try {
+            store.setTimestamp(new Date());
             storeMapper.insertStore(store);
             return ResultModel.ofSuccess(store);
         } catch (Exception e) {
