@@ -19,7 +19,7 @@ public class FileService {
         this.fileMapper = fileMapper;
     }
 
-    public ResultModel saveFile(MultipartFile file) throws IOException {
+    public ResultModel<File> saveFile(MultipartFile file) throws IOException {
         // Save file logic here
         // ...
         if (file.isEmpty()) {

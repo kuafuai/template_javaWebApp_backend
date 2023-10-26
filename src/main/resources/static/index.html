@@ -1,1 +1,138 @@
-hello world
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="semantic/semantic.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="semantic/semantic.min.js"></script>
+
+    <style>
+        /* 自定义CSS样式，用于设置图片大小 */
+        .fixed-image {
+            width: 100px; /* 设置图片宽度 */
+            height: auto; /* 根据宽度自动计算高度，以保持图片比例不变 */
+        }
+    </style>
+</head>
+<body>
+<div class="center center-content">
+    <div class="ui segment">
+
+        <button class="ui primary button" id="addButton">新增</button>
+
+        <h3>Data List</h3>
+        <table class="ui celled table">
+            <thead>
+            <tr>
+                <th>编号</th>
+                <th>门店</th>
+                <th>收集内容</th>
+                <th>创建时间</th>
+                <th>图片</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="data-table-body">
+            <!-- Data will be dynamically populated here -->
+            </tbody>
+        </table>
+
+
+    </div>
+
+    <!-- 模态框 -->
+    <div class="ui modal" id="myModal">
+        <i class="close icon"></i>
+        <div class="header">
+            新增项目
+        </div>
+        <div class="content">
+            <!-- 使用表单 -->
+            <form id="feedbackForm">
+                <div class="ui form">
+                    <div class="field">
+                        <label>门店</label>
+                        <input type="text" name="store" placeholder="输入门店">
+                    </div>
+                    <div class="field">
+                        <label>反馈信息</label>
+                        <textarea name="feedback" rows="4" placeholder="输入反馈信息"></textarea>
+                    </div>
+                    <div class="field">
+                        <label>上传图片</label>
+                        <input type="file" name="image">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="actions">
+            <div class="ui button" id="cancelButton">取消</div>
+            <button type="button" class="ui primary button" id="saveButton">保存</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        // Make an AJAX GET request to the API
+        $.get("/feedback/list", function(data) {
+            // Clear any existing list items
+            console.log(data)
+            $("#data-table-body").empty();
+            const tableBody = document.getElementById('data-table-body');
+            // Iterate through the data and create list items
+            $.each(data.list, function(index, item) {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.id}</td>
+                    <td>${item.storeName}</td>
+                    <td>${item.feedbackText}</td>
+                    <td>${item.createdAt}</td>
+                    <td><img class="fixed-image" src="${item.imageUrl}"></td>
+                    <td><a>详情</a></td>
+                  `;
+                tableBody.appendChild(row);
+                //$("#data-list").append("<li class='item'>" + item.name + "</li>");
+            });
+        });
+    });
+
+
+    $('#addButton').click(function () {
+        $('#myModal').modal('show'); // 显示模态框
+    });
+
+    $('#cancelButton').click(function () {
+        $('#myModal').modal('hide'); // 隐藏模态框
+    });
+
+
+    // 手动触发AJAX
+    $('#saveButton').click(function() {
+        // 获取表单数据
+        var formData = new FormData(document.getElementById('feedbackForm'));
+
+        // 手动触发AJAX请求
+        $.ajax({
+            url: '/feedback/save',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                // 处理保存成功的响应
+                location.reload();
+            },
+            error: function(error) {
+                // 处理保存失败的情况
+            }
+        });
+    });
+
+
+
+</script>
+
+</body>
+</html>
