@@ -3,6 +3,7 @@ package com.aiassistant.controller;
 import com.aiassistant.model.Store;
 import com.aiassistant.service.StoreService;
 import com.aiassistant.utils.ResultModel;
+import com.aiassistant.utils.ResultPageModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,7 +27,7 @@ public class StoreController {
     }
 
     @GetMapping("/getAll")
-    public ResultModel getAllStores(Integer pageNo, Integer pageSize) {
+    public ResultPageModel getAllStores(Integer pageNo, Integer pageSize) {
         return storeService.getAllStores(pageNo, pageSize);
     }
 }
