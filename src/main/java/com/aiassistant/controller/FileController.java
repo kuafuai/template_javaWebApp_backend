@@ -20,8 +20,7 @@ public class FileController {
     @PostMapping("/upload")
     public ResultModel uploadFile(@RequestParam("file") MultipartFile file) {
         try {
-            fileService.saveFile(file);
-            return ResultModel.ofSuccess("File uploaded successfully");
+            return fileService.saveFile(file);
         } catch (Exception e) {
             return ResultModel.ofError("Failed to upload file", e);
         }
