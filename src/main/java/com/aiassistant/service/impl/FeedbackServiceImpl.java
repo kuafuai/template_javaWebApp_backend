@@ -8,6 +8,8 @@ import com.aiassistant.utils.ResultPageModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 @Service
 public class FeedbackServiceImpl implements FeedbackService {
 
@@ -21,6 +23,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     @Override
     public ResultModel addFeedback(Feedback feedback) {
         try {
+            feedback.setCreatedAt(new Date());
             feedbackMapper.insertFeedback(feedback);
             return ResultModel.ofSuccess();
         } catch (Exception e) {
@@ -30,14 +33,8 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     public ResultPageModel<Feedback> getFeedbackList() {
-        try {
-            ResultPageModel<Feedback> resultPageModel = new ResultPageModel<>();
-            resultPageModel.setList(feedbackMapper.getFeedbackList());
-            resultPageModel.setTotalRecords(resultPageModel.getList().size());
-            return resultPageModel;
-        } catch (Exception e) {
-            return ResultPageModel.ofResult(0, "Failed to get feedback list", null, e);
-        }
+
+        return ResultPageModel.of(feedbackMapper.getFeedbackList());
     }
 
     @Override
