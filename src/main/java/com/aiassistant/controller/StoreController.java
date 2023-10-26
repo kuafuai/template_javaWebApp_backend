@@ -4,6 +4,7 @@ import com.aiassistant.model.Store;
 import com.aiassistant.service.StoreService;
 import com.aiassistant.utils.ResultModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,5 +23,10 @@ public class StoreController {
     @PostMapping("/add")
     public ResultModel addStore(@RequestBody Store store) {
         return storeService.addStore(store);
+    }
+
+    @GetMapping("/getAll")
+    public ResultModel getAllStores(Integer pageNo, Integer pageSize) {
+        return storeService.getAllStores(pageNo, pageSize);
     }
 }
