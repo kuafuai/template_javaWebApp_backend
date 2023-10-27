@@ -31,7 +31,7 @@ public class FileService {
         long fileSize = file.getSize();
 
         // 保存文件到服务器
-        String uploadDir = "D:\\project\\html"; // 保存文件的目录
+        String uploadDir = "/data/app/html"; // 保存文件的目录
         java.io.File uploadPath = new java.io.File(uploadDir);
         if (!uploadPath.exists()) {
             uploadPath.mkdir();

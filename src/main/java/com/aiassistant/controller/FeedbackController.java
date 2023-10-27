@@ -6,12 +6,14 @@ import com.aiassistant.service.FeedbackService;
 import com.aiassistant.service.FileService;
 import com.aiassistant.utils.ResultModel;
 import com.aiassistant.utils.ResultPageModel;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
+@Slf4j
 @RestController
 @RequestMapping("/feedback")
 public class FeedbackController {
@@ -34,7 +36,7 @@ public class FeedbackController {
                                     @RequestParam("feedback") String feedback,
                                     @RequestParam("image") MultipartFile image) {
         try {
-
+            log.info("{},{}", store, feedback);
             ResultModel<File> fileModel = fileService.saveFile(image);
 
             String imageUrl = fileModel.getData().getFileUrl();
