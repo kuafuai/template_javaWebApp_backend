@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 public interface CableService {
     ResultModel addCable(Cable cable);
     ResultPageModel<Cable> getCableList();
+    ResultPageModel<Cable> getCableListByProductCode(String productCode);
     ResultModel<Cable> getCableById(Integer id);
 
     ResultModel uploadExcel(MultipartFile file);

@@ -35,6 +35,15 @@ public class CableServiceImpl implements CableService {
     }
 
     @Override
+    public ResultPageModel<Cable> getCableListByProductCode(String productCode) {
+        if (!StringUtils.isNotBlank(productCode)) {
+            return ResultPageModel.of(cableMapper.getCableList());
+        } else {
+            return ResultPageModel.of(cableMapper.getCableListByProductCode(productCode));
+        }
+    }
+
+    @Override
     public ResultModel<Cable> getCableById(Integer id) {
         Cable cable = cableMapper.selectById(id);
         if (cable != null) {

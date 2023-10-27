@@ -25,8 +25,8 @@ public class CableController {
     }
 
     @GetMapping("/list")
-    public ResultPageModel<Cable> getCableList() {
-        return cableService.getCableList();
+    public ResultPageModel<Cable> getCableList(@RequestParam("productCode") String productCode) {
+        return cableService.getCableListByProductCode(productCode);
     }
 
     @GetMapping("/{id}")

@@ -16,6 +16,9 @@ public interface CableMapper {
     @Select("SELECT * FROM cable")
     List<Cable> getCableList();
 
+    @Select("SELECT * FROM cable where product_code like '%' || #{productCode} || '%'")
+    List<Cable> getCableListByProductCode(String productCode);
+
     @Select("SELECT * FROM cable WHERE id = #{id}")
     Cable selectById(Integer id);
 }
