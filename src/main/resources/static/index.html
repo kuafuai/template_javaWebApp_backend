@@ -52,7 +52,10 @@
                 <div class="ui form">
                     <div class="field">
                         <label>门店</label>
-                        <input type="text" name="store" placeholder="输入门店">
+<!--                        <input type="text" name="store" placeholder="输入门店">-->
+                        <select name="store" id="storeSelect">
+                            <!-- 门店选项将在此动态添加 -->
+                        </select>
                     </div>
                     <div class="field">
                         <label>反馈信息</label>
@@ -96,6 +99,10 @@
                 //$("#data-list").append("<li class='item'>" + item.name + "</li>");
             });
         });
+
+        // 在页面加载时填充下拉选择框
+        populateStoreSelect();
+
     });
 
 
@@ -129,6 +136,26 @@
             }
         });
     });
+
+    // 获取门店数据并填充下拉选择框
+    function populateStoreSelect() {
+        $.ajax({
+            url: '/store/getAll', // 替换为从后端获取门店数据的接口
+            type: 'GET',
+            success: function(data) {
+                // 清空下拉选择框
+                $('#storeSelect').empty();
+                console.log(data)
+                // 添加门店选项
+                data.list.forEach(function(store) {
+                    $('#storeSelect').append('<option value="' + store.name + '">' + store.name + '</option>');
+                });
+            },
+            error: function(error) {
+                // 处理错误
+            }
+        });
+    }
 
 
 
