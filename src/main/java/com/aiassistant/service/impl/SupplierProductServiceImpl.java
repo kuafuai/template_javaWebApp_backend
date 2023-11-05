@@ -26,9 +26,11 @@ public class SupplierProductServiceImpl implements SupplierProductService {
 
     @Override
     public ResultPageModel<SupplierProduct> getSupplierProductList() {
-        ResultPageModel<SupplierProduct> resultPageModel = ResultPageModel.of(supplierProductMapper.getSupplierProductList())
+        ResultPageModel<SupplierProduct> resultPageModel = 
+          ResultPageModel.of(supplierProductMapper.getSupplierProductList());
         return resultPageModel;
     }
+  
 
     @Override
     public SupplierProduct getSupplierProductByProductModel(String productModel) {
