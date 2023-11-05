@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/cable")
+@CrossOrigin(origins = {"*"})
 public class CableController {
 
     private final CableService cableService;
