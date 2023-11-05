@@ -6,6 +6,6 @@ import com.aiassistant.utils.ResultPageModel;
 
 public interface SupplierProductService {
     ResultModel addSupplierProduct(SupplierProduct supplierProduct);
-    ResultPageModel<SupplierProduct> getSupplierProductList();
+    ResultPageModel<SupplierProduct> getSupplierProductList(String productCode);
     SupplierProduct getSupplierProductByProductModel(String productModel);
 }
