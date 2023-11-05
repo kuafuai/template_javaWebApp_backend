@@ -5,7 +5,6 @@ import com.aiassistant.model.SupplierProduct;
 import com.aiassistant.service.SupplierProductService;
 import com.aiassistant.utils.ResultModel;
 import com.aiassistant.utils.ResultPageModel;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,16 +25,12 @@ public class SupplierProductServiceImpl implements SupplierProductService {
     }
 
     @Override
-    public ResultPageModel<SupplierProduct> getSupplierProductList(String productCode) {
-        if (StringUtils.isNotBlank(productCode)) {
-            return ResultPageModel.of(supplierProductMapper.getSupplierProductListByModel(productCode));
-        } else {
-            ResultPageModel<SupplierProduct> resultPageModel =
-                    ResultPageModel.of(supplierProductMapper.getSupplierProductList());
-            return resultPageModel;
-        }
+    public ResultPageModel<SupplierProduct> getSupplierProductList() {
+        ResultPageModel<SupplierProduct> resultPageModel = 
+          ResultPageModel.of(supplierProductMapper.getSupplierProductList());
+        return resultPageModel;
     }
-
+  
 
     @Override
     public SupplierProduct getSupplierProductByProductModel(String productModel) {
