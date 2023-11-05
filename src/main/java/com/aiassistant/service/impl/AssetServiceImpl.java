@@ -1,0 +1,1 @@
+在com.aiassistant.service.impl包中定义AssetServiceImpl类

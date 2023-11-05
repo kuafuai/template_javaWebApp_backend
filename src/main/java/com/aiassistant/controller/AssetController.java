@@ -1,0 +1,1 @@
+在com.aiassistant.controller包中定义AssetController类
