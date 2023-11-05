@@ -5,12 +5,11 @@ import com.aiassistant.service.SupplierProductService;
 import com.aiassistant.utils.ResultModel;
 import com.aiassistant.utils.ResultPageModel;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/supplierProduct")
+@CrossOrigin(origins = {"*"})
 public class SupplierProductController {
     private final SupplierProductService supplierProductService;
 
@@ -20,12 +19,17 @@ public class SupplierProductController {
     }
 
     @PostMapping("/add")
-    public ResultModel addSupplierProduct(SupplierProduct supplierProduct) {
+    public ResultModel addSupplierProduct(@RequestBody SupplierProduct supplierProduct) {
         return supplierProductService.addSupplierProduct(supplierProduct);
     }
 
-    @PostMapping("/list")
-    public ResultPageModel<SupplierProduct> getSupplierProductList() {
-        return supplierProductService.getSupplierProductList();
+    @PostMapping("/save")
+    public ResultModel saveSupplierProduct(SupplierProduct supplierProduct) {
+        return supplierProductService.addSupplierProduct(supplierProduct);
+    }
+
+    @GetMapping("/list")
+    public ResultPageModel<SupplierProduct> getSupplierProductList(@RequestParam(name = "productCode", required = false) String productCode) {
+        return supplierProductService.getSupplierProductList(productCode);
     }
 }

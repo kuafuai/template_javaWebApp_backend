@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="semantic/semantic.min.css">
+    <script src="jquery-3.6.0.min.js"></script>
+    <script src="semantic/semantic.min.js"></script>
+</head>
+<body>
+<div class="center center-content">
+    <div class="ui segment">
+
+        <!-- 查询输入框 -->
+        <div class="ui labeled input">
+            <label class="ui label" for="productCode">产品型号:</label>
+            <input type="text" placeholder="产品编码" id="productCode">
+        </div>
+
+
+        <button class="ui primary button" id="searchButton">查询</button>
+
+
+        <button class="ui primary button" id="addButton">添加</button>
+
+
+        <h3>Data List</h3>
+        <table class="ui celled table">
+            <thead>
+            <tr>
+                <th>产品型号</th>
+                <th>交付时间</th>
+                <th>产品价格</th>
+                <th>可交付数量</th>
+                <th>交易对手方</th>
+                <th>预付款比例</th>
+            </tr>
+            </thead>
+            <tbody id="data-table-body">
+            <!-- Data will be dynamically populated here -->
+            </tbody>
+        </table>
+
+
+    </div>
+
+    <div class="ui modal" id="myModal">
+        <i class="close icon"></i>
+        <div class="header">
+            新增
+        </div>
+        <div class="content">
+            <!-- 使用表单 -->
+            <form id="feedbackForm">
+                <div class="ui form">
+                    <div class="field">
+                        <label>产品型号</label>
+                        <input type="text" name="productModel" placeholder="输入产品型号">
+                    </div>
+                    <div class="field">
+                        <label>交付时间</label>
+                        <input type="text" name="deliveryTime" placeholder="输入交付时间">
+                    </div>
+                    <div class="field">
+                        <label>产品价格</label>
+                        <input type="text" name="productPrice" placeholder="输入产品价格">
+                    </div>
+                    <div class="field">
+                        <label>可交付数量</label>
+                        <input type="text" name="deliverableQuantity" placeholder="输入可交付数量">
+                    </div>
+                    <div class="field">
+                        <label>交易对手方</label>
+                        <input type="text" name="tradingCounterparty" placeholder="输入交易对手方">
+                    </div>
+                    <div class="field">
+                        <label>预付款比例</label>
+                        <input type="text" name="advancePaymentRatio" placeholder="输入预付款比例">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="actions">
+            <div class="ui button" id="cancelButton">取消</div>
+            <button type="button" class="ui primary button" id="saveButton">保存</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        search('',0)
+    });
+
+    $('#searchButton').click(function () {
+        var productCode = $('#productCode').val();
+        search(productCode, 1)
+    })
+
+    function search(product_code, flag) {
+        $("#data-table-body").empty();
+
+        $.get("/supplierProduct/list?productCode=" + product_code, function (data) {
+
+            const tableBody = document.getElementById('data-table-body');
+
+            // Iterate through the data and create list items
+            $.each(data.list, function (index, item) {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.productModel}</td>
+                    <td>${item.deliveryTime}</td>
+                    <td>${item.productPrice}</td>
+                    <td>${item.deliverableQuantity}</td>
+                    <td>${item.tradingCounterparty}</td>
+                    <td>${item.advancePaymentRatio}</td>
+                  `;
+                tableBody.appendChild(row);
+
+
+
+                //$("#data-list").append("<li class='item'>" + item.name + "</li>");
+            });
+
+        });
+
+    }
+
+    $('#addButton').click(function () {
+        $('#myModal').modal('show'); // 显示模态框
+    });
+
+    $('#cancelButton').click(function () {
+        $('#myModal').modal('hide'); // 隐藏模态框
+    });
+
+    $('#saveButton').click(function() {
+        // 获取表单数据
+        var formData = new FormData(document.getElementById('feedbackForm'));
+
+        // 手动触发AJAX请求
+        $.ajax({
+            url: '/supplierProduct/save',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                // 处理保存成功的响应
+                location.reload();
+            },
+            error: function(error) {
+                // 处理保存失败的情况
+            }
+        });
+    });
+
+
+
+</script>
+
+</body>
+</html>
