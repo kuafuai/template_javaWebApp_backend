@@ -11,7 +11,7 @@ import java.util.List;
 public interface SupplierProductMapper {
     @Insert("insert into supplier_product(product_model,delivery_time,product_price,deliverable_quantity,trading_counterparty,advance_payment_ratio) "+
             "values(#{productModel},#{deliveryTime},#{productPrice},#{deliverableQuantity},#{tradingCounterparty},#{advancePaymentRatio})")
-    SupplierProduct insertSupplierProduct(SupplierProduct supplierProduct);
+    void insertSupplierProduct(SupplierProduct supplierProduct);
 	
   	@Select("select * from supplier_product")
     List<SupplierProduct> getSupplierProductList();
