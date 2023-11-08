@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="semantic/semantic.min.css">
+    <script src="jquery-3.6.0.min.js"></script>
+    <script src="semantic/semantic.min.js"></script>
+    <style>
+        .center {
+            text-align: center;
+        }
+        .center-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+<div class="center center-content">
+    <div class="ui segment">
+        <h3>Zip文件检测</h3>
+        <form id="check_form">
+            <div class="ui input">
+                <input type="file" name="file">
+                <button class="ui primary button" type="button" id="check_button" >检测</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        // Make an AJAX GET request to the API
+    });
+
+    $('#check_button').click(function() {
+        var formData = new FormData(document.getElementById('check_form'));
+        console.log(formData)
+        $.ajax({
+            url: '/zip/check',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                // 处理保存成功的响应
+                console.log(response)
+                alert(response.msg)
+            },
+            error: function(error) {
+                // 处理保存失败的情况
+
+            }
+        });
+    })
+
+</script>
+
+</body>
+</html>
