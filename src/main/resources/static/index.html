@@ -70,8 +70,9 @@
             success: function(response) {
                 // 处理保存成功的响应
                 progress.hide();
-                alert(response.msg)
-
+                $.each(response.data, function(index, item) {
+                    alert(item)
+                });
             },
             error: function(error) {
                 // 处理保存失败的情况

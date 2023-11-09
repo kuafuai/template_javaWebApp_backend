@@ -21,7 +21,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -102,47 +104,49 @@ public class ZipCheckController {
             zipFile.close();
             tempFile.delete();
 
+            List<String> result = new ArrayList<>();
+
             if (shell_l && shell_u) {
-
-                DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-                DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-                InputSource inputSource = new InputSource(new StringReader(iteroContent.toString()));
-                Document doc = dBuilder.parse(inputSource);
-                String uniqueValue = doc.getElementsByTagName("UniquePatientIdentifier").item(0).getTextContent();
-                String dueDateValue = doc.getElementsByTagName("DueDate").item(0).getTextContent();
-                String exportTimeValue = doc.getElementsByTagName("ExportTime").item(0).getTextContent();
-
-                AlmModel oldModel = almTalbleMapper.getByUniqueKey(uniqueValue);
-                if (oldModel != null) {
-                    return ResultModel.ofError("模型文件不唯一，可能不是同一个人的数据");
-                } else {
-                    AlmModel newModel = new AlmModel();
-                    newModel.setUniqueKey(uniqueValue);
-                    newModel.setDueDate(dueDateValue);
-                    newModel.setExportTime(exportTimeValue);
-                    almTalbleMapper.insert(newModel);
-                }
-
-                LocalDate dueDate = LocalDate.parse(dueDateValue, formatter);
-                LocalDate currentDate = LocalDate.now();
-                Period period = dueDate.until(currentDate);
-                int year = period.getYears();
-                int month = period.getMonths();
-                int daysDifference = period.getDays();
-
-                if (year > 0 || month > 0 || daysDifference > 14) {
-                    return ResultModel.ofSuccess("模型数据采集时间过长", "");
-                } else {
-                    return ResultModel.ofSuccess("模型文件符合要求", "");
-                }
-
+                result.add("模型文件符合要求");
             } else if (lprofile_l && lprofile_u) {
-                return ResultModel.ofError("模型文件包含底座，不符合要求");
+                result.add("模型文件包含底座，不符合要求");
             } else if (lockedocclusion) {
-                return ResultModel.ofError("模型文件只包含咬合文件，不符合要求");
+                result.add("模型文件只包含咬合文件，不符合要求");
             } else {
-                return ResultModel.ofError("没有找到合法文件");
+                result.add("没有找到合法文件");
+                return ResultModel.ofSuccess(result);
             }
+
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            InputSource inputSource = new InputSource(new StringReader(iteroContent.toString()));
+            Document doc = dBuilder.parse(inputSource);
+            String uniqueValue = doc.getElementsByTagName("UniquePatientIdentifier").item(0).getTextContent();
+            String dueDateValue = doc.getElementsByTagName("DueDate").item(0).getTextContent();
+            String exportTimeValue = doc.getElementsByTagName("ExportTime").item(0).getTextContent();
+
+            AlmModel oldModel = almTalbleMapper.getByUniqueKey(uniqueValue);
+            if (oldModel != null) {
+                result.add("模型文件不唯一，可能不是同一个人的数据");
+            } else {
+                AlmModel newModel = new AlmModel();
+                newModel.setUniqueKey(uniqueValue);
+                newModel.setDueDate(dueDateValue);
+                newModel.setExportTime(exportTimeValue);
+                almTalbleMapper.insert(newModel);
+            }
+
+            LocalDate dueDate = LocalDate.parse(dueDateValue, formatter);
+            LocalDate currentDate = LocalDate.now();
+            Period period = dueDate.until(currentDate);
+            int year = period.getYears();
+            int month = period.getMonths();
+            int daysDifference = period.getDays();
+
+            if (year > 0 || month > 0 || daysDifference > 14) {
+                result.add("模型数据采集时间过长");
+            }
+            return ResultModel.ofSuccess(result);
 
         } catch (Exception e) {
             e.printStackTrace();
