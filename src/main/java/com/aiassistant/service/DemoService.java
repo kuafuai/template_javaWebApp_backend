@@ -1,33 +1,28 @@
 package com.aiassistant.service;
 
-import com.aiassistant.model.Demo;
+import com.aiassistant.mapper.DemoMapper;
 import com.aiassistant.utils.ResultModel;
-import com.aiassistant.utils.ResultPageModel;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-/**
- * 业务逻辑层--demo Service
- */
-public interface DemoService {
+@Service
+public class DemoService {
+    private final DemoMapper demoMapper;
 
-    /**
-     * 添加一条Demo
-     *
-     * @param demo
-     */
-    ResultModel<Demo> addDemo(Demo demo);
+    @Autowired
+    public DemoService(DemoMapper demoMapper) {
+        this.demoMapper = demoMapper;
+    }
 
-    /**
-     * 获取所有
-     *
-     * @return
-     */
-    ResultPageModel<Demo> getDemoList();
+    public ResultModel<String> uploadZipFile(MultipartFile file) {
+        String filePath = saveFile(file);
+        demoMapper.uploadZipFile(filePath);
+        return ResultModel.ofSuccess(filePath);
+    }
 
-    /**
-     * 根据Id查询
-     *
-     * @param id
-     * @return
-     */
-    Demo getById(Integer id);
+    private String saveFile(MultipartFile file) {
+        // Save the file to the server and return the file path
+        return "path/to/zip/file";
+    }
 }

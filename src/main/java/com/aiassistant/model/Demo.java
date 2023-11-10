@@ -1,13 +1,13 @@
 package com.aiassistant.model;
 
-import lombok.Data;
-
-/**
- * 实体类--Demo
- */
-@Data
 public class Demo {
-    private int id;
-    private String demoType;
-    private String demoName;
+    private String filePath;
+
+    public void uploadZipFile(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
 }
