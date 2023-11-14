@@ -1,0 +1,1 @@
+在`com.aiassistant.model.Demo`文件中定义`Asset`类

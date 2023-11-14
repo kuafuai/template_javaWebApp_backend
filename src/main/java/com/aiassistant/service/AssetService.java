@@ -1,0 +1,1 @@
+在`com.aiassistant.service.DemoService`文件中定义`AssetService`接口

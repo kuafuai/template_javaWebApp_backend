@@ -1,0 +1,1 @@
+在`com.aiassistant.mapper.DemoMapper`文件中定义`AssetMapper`接口
