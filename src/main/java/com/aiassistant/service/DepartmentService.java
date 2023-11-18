@@ -1,0 +1,1 @@
+在com.aiassistant.service.DepartmentService文件中定义getDepartmentList方法
