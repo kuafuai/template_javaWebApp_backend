@@ -1,36 +1,31 @@
 package com.aiassistant.controller;
 
-import com.aiassistant.model.Demo;
 import com.aiassistant.service.DemoService;
 import com.aiassistant.utils.ResultModel;
-import com.aiassistant.utils.ResultPageModel;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * 控制器层--DemoController
- */
-@RestController
-@RequiredArgsConstructor
-@Api(tags = "DemoController")
-public class DemoController {
+import java.util.List;
 
+@RestController
+@RequestMapping("/demo")
+public class DemoController {
     private final DemoService demoService;
 
-    @PostMapping("/addDemo")
-    @ApiOperation(value = "Demo add")
-    public ResultModel addDemo(@RequestBody Demo demo) {
-        return demoService.addDemo(demo);
+    @Autowired
+    public DemoController(DemoService demoService) {
+        this.demoService = demoService;
     }
 
-    @GetMapping("/getDemoList")
-    @ApiOperation(value = "Get Demo list")
-    public ResultPageModel<Demo> getDemoList() {
-        return demoService.getDemoList();
+    @GetMapping("/googleSearchData")
+    public ResultModel<List<String>> getGoogleSearchData() {
+        return demoService.getGoogleSearchData();
+    }
+
+    @GetMapping("/googleSearchDataByHour")
+    public ResultModel<List<String>> getGoogleSearchDataByHour() {
+        return demoService.getGoogleSearchDataByHour();
     }
 }

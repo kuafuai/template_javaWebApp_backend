@@ -1,36 +1,20 @@
 package com.aiassistant.mapper;
 
-import com.aiassistant.model.Demo;
+import com.aiassistant.model.GoogleSearchData;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
-/**
- * 持久化层--DemoMapper
- */
 @Mapper
 public interface DemoMapper {
+    @Insert("INSERT INTO google_search_data (keyword) VALUES (#{keyword})")
+    void insertGoogleSearchData(String keyword);
 
-    /**
-     * 插入一条目录记录
-     *
-     * @param demo
-     */
-    Demo insertDemo(Demo demo);
+    @Select("SELECT keyword FROM google_search_data ORDER BY id DESC LIMIT 10")
+    List<String> getGoogleSearchData();
 
-    /**
-     * 查询所有目录记录
-     *
-     * @return
-     */
-    List<Demo> getDemoList();
-
-    /**
-     * 根据Id查询
-     *
-     * @param id
-     * @return
-     */
-    Demo selectById(@Param("id") Integer id);
+    @Select("SELECT keyword FROM google_search_data WHERE create_time >= DATE_SUB(NOW(), INTERVAL 1 HOUR) ORDER BY id DESC LIMIT 10")
+    List<String> getGoogleSearchDataByHour();
 }
