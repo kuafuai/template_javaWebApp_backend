@@ -19,7 +19,11 @@ public class AssetServiceImpl implements AssetService {
 
     @Override
     public ResultModel<Asset> addAsset(Asset asset) {
-        // TODO: Implement the logic to add a new asset to the system
-        return null;
+        try {
+            assetMapper.insertAsset(asset);
+            return ResultModel.ofSuccess(asset);
+        } catch (Exception e) {
+            return ResultModel.ofError("Failed to add asset", e);
+        }
     }
 }

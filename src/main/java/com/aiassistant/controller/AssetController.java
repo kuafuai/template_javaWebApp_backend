@@ -6,11 +6,9 @@ import com.aiassistant.utils.ResultModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/asset")
 public class AssetController {
     private final AssetService assetService;
 
@@ -19,7 +17,7 @@ public class AssetController {
         this.assetService = assetService;
     }
 
-    @PostMapping("/add")
+    @PostMapping("/assets")
     public ResultModel addAsset(@RequestBody Asset asset) {
         return assetService.addAsset(asset);
     }
