@@ -1,1 +1,8 @@
-在`com.aiassistant.service.AssetService`接口中定义`addAsset`方法
+package com.aiassistant.service;
+
+import com.aiassistant.model.Asset;
+import com.aiassistant.utils.ResultModel;
+
+public interface AssetService {
+    ResultModel<Asset> addAsset(Asset asset);
+}
