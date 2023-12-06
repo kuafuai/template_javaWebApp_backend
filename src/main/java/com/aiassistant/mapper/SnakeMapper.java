@@ -1,0 +1,1 @@
+在`com.aiassistant.mapper.SnakeMapper`文件中定义`insertDirection`方法
