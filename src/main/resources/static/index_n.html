@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>常州中电新能</title>
+    <meta content="demo" name="description">
+
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="css/index.css">
+    <script src="js/vue.min.js"></script>
+
+
+    <!-- 引入组件库 -->
+    <script src="js/index.js"></script>
+    <script src="js/axios.min.js"></script>
+
+</head>
+<body>
+<div id="app">
+    <el-row>
+        <el-col>
+            <el-form :inline="true" class="demo-form-inline">
+                <el-form-item label="产品编码:">
+                    <el-input placeholder="产品编码"></el-input>
+                </el-form-item>
+                <el-form-item label="生产数量:">
+                    <el-input placeholder="生产数量"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary">查询</el-button>
+                    <el-button type="primary">打印</el-button>
+                    <el-button type="primary">导入</el-button>
+                </el-form-item>
+            </el-form>
+        </el-col>
+    </el-row>
+    <el-row>
+        <el-col>
+            <el-table :data="tableData" border style="width: 100%">
+                <el-table-column fixed width="80" label="项目" prop="projectNumber"></el-table-column>
+                <el-table-column fixed width="150" label="产品编码" prop="productCode"></el-table-column>
+                <el-table-column fixed width="100" label="产品版本" prop="versionNumber"></el-table-column>
+                <el-table-column width="200" label="产品名称" prop="productName"></el-table-column>
+                <el-table-column width="150" label="子件编码" prop="componentCode"></el-table-column>
+
+                <el-table-column width="600" label="线缆规格型号" prop="cableSpecification"></el-table-column>
+                <el-table-column width="100" label="线号（+-）" prop="lineNumber"></el-table-column>
+                <el-table-column width="100" label="长度/mm" prop="length"></el-table-column>
+
+                <el-table-column width="100" label="左剥外皮/mm" prop="leftPeelOuter"></el-table-column>
+                <el-table-column width="100" label="左剥内皮/mm" prop="leftPeelInner"></el-table-column>
+                <el-table-column width="100" label="右剥外皮/mm" prop="rightPeelOuter"></el-table-column>
+                <el-table-column width="100" label="右剥内皮/mm" prop="rightPeelInner"></el-table-column>
+
+                <el-table-column width="100" label="标记/喷码" prop="sprayCode"></el-table-column>
+                <el-table-column width="100" label="左剥外皮/mm" prop="leftPeelOuterProcess"></el-table-column>
+                <el-table-column width="100" label="左屏蔽处理/mm" prop="leftShieldProcess"></el-table-column>
+                <el-table-column width="100" label="左剥内皮/mm" prop="leftPeelInnerProcess"></el-table-column>
+                <el-table-column width="100" label="右剥外皮/mm" prop="rightPeelOuterProcess"></el-table-column>
+                <el-table-column width="100" label="右屏蔽处理/mm" prop="rightShieldProcess"></el-table-column>
+                <el-table-column width="100" label="右剥内皮/mm" prop="rightPeelInnerProcess"></el-table-column>
+                <el-table-column width="100" label="操作" fixed="right">
+
+                </el-table-column>
+            </el-table>
+            <el-pagination
+                    :current-page="searchParams.pageNum"
+                    :page-size="searchParams.pageSize"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="total"
+                    @current-change="handleCurrentPageChange" style="margin-top: 20px">
+            </el-pagination>
+        </el-col>
+    </el-row>
+</div>
+</body>
+<script>
+    var vm = new Vue({
+        el: '#app',
+        data() {
+            return {
+                total: 0,
+                searchParams: {
+                    productCode: '',
+                    pageNum: 1,
+                    pageSize: 10,
+                },
+                tableData: []
+            }
+        },
+        methods: {
+            toggleSelection(rows) {
+            },
+            handleSelectionChange(val) {
+            },
+            handleCurrentPageChange(newPage) {
+                this.searchParams.pageNum = newPage;
+
+                this.getList();
+            },
+            getList() {
+                axios.get('/cable/list', {params: this.searchParams}).then(resp => {
+                    console.log("22222", resp)
+                    this.tableData = resp.data.list;
+                    this.total = resp.data.totalRecords;
+
+                }).catch((err) => {
+                    console.log("11111", err)
+                })
+            }
+        },
+        mounted() {
+
+        },
+        created() {
+            this.getList();
+        }
+    });
+</script>
+</html>

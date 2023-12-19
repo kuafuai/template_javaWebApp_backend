@@ -24,4 +24,6 @@ public class Cable {
     private String rightPeelOuterProcess;
     private String rightShieldProcess;
     private String rightPeelInnerProcess;
+    private Boolean isDefault;
+    private String versionNumber;
 }

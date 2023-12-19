@@ -61,22 +61,26 @@ public class CableServiceImpl implements CableService {
             List<String> rowList = excelData.get(i);
             String projectNumber = String.valueOf(rowList.get(0));
             String productCode = String.valueOf(rowList.get(1));
-            String productName = String.valueOf(rowList.get(2));
-            String componentCode = String.valueOf(rowList.get(3));
-            String cableSpecification = String.valueOf(rowList.get(4));
-            String lineNumber = String.valueOf(rowList.get(5));
-            String length = String.valueOf(rowList.get(6));
-            String leftPeelOuter = String.valueOf(rowList.get(7));
-            String leftPeelInner = String.valueOf(rowList.get(8));
-            String rightPeelOuter = String.valueOf(rowList.get(9));
-            String rightPeelInner = String.valueOf(rowList.get(10));
-            String sprayCode = String.valueOf(rowList.get(11));
-            String leftPeelOuterProcess = String.valueOf(rowList.get(12));
-            String leftShieldProcess = String.valueOf(rowList.get(13));
-            String leftPeelInnerProcess = String.valueOf(rowList.get(14));
-            String rightPeelOuterProcess = String.valueOf(rowList.get(15));
-            String rightShieldProcess = String.valueOf(rowList.get(16));
-            String rightPeelInnerProcess = String.valueOf(rowList.get(17));
+
+            String versionNumber = String.valueOf(rowList.get(2));
+            boolean isDefault = StringUtils.equalsIgnoreCase(String.valueOf(rowList.get(3)), "是") ? true : false;
+
+            String productName = String.valueOf(rowList.get(4));
+            String componentCode = String.valueOf(rowList.get(5));
+            String cableSpecification = String.valueOf(rowList.get(6));
+            String lineNumber = String.valueOf(rowList.get(7));
+            String length = String.valueOf(rowList.get(8));
+            String leftPeelOuter = String.valueOf(rowList.get(9));
+            String leftPeelInner = String.valueOf(rowList.get(10));
+            String rightPeelOuter = String.valueOf(rowList.get(11));
+            String rightPeelInner = String.valueOf(rowList.get(12));
+            String sprayCode = String.valueOf(rowList.get(13));
+            String leftPeelOuterProcess = String.valueOf(rowList.get(14));
+            String leftShieldProcess = String.valueOf(rowList.get(15));
+            String leftPeelInnerProcess = String.valueOf(rowList.get(16));
+            String rightPeelOuterProcess = String.valueOf(rowList.get(17));
+            String rightShieldProcess = String.valueOf(rowList.get(19));
+            String rightPeelInnerProcess = String.valueOf(rowList.get(19));
 
             if (StringUtils.isBlank(projectNumber) && StringUtils.isBlank(productCode)) {
                 continue;
@@ -101,6 +105,8 @@ public class CableServiceImpl implements CableService {
             cable.setRightPeelOuterProcess(rightPeelOuterProcess);
             cable.setRightShieldProcess(rightShieldProcess);
             cable.setRightPeelInnerProcess(rightPeelInnerProcess);
+            cable.setIsDefault(isDefault);
+            cable.setVersionNumber(versionNumber);
 
             cableMapper.insertCable(cable);
         }

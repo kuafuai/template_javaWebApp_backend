@@ -28,14 +28,16 @@
         <button class="ui primary button" id="importButton">导入</button>
 
 
-        <h3>Data List</h3>
+        <h3></h3>
         <table class="ui celled table">
             <thead>
             <tr>
-                <th>项目</th>
+                <th style="width: 60px">项目</th>
                 <th>产品编码</th>
+                <th>产品版本</th>
                 <th>产品名称</th>
                 <th>子件编码</th>
+
                 <th>线缆规格型号</th>
                 <th>线号（+-）</th>
                 <th>长度/mm</th>
@@ -43,6 +45,7 @@
                 <th>左剥内皮/mm</th>
                 <th>右剥外皮/mm</th>
                 <th>右剥内皮/mm</th>
+
                 <th>标记/喷码</th>
                 <th>左剥外皮/mm</th>
                 <th>左屏蔽处理/mm</th>
@@ -50,7 +53,7 @@
                 <th>右剥外皮/mm</th>
                 <th>右屏蔽处理/mm</th>
                 <th>右剥内皮/mm</th>
-                <th>操作</th>
+                <th class="center aligned" style="width: 60px">操作</th>
             </tr>
             </thead>
             <tbody id="data-table-body">
@@ -103,7 +106,8 @@
                                 <thead>
                                 <tr>
                                     <th>项目</th>
-                                    <th>产品料号</th>
+                                    <th>产品编码</th>
+                                    <th>产品版本</th>
                                     <th>产品名称</th>
                                     <th>生产数量</th>
                                     <th>子件编码</th>
@@ -203,6 +207,8 @@
 
         var input_number = $('#number').val();
 
+        console.log(product_code, product_code=='')
+
         $.get("/cable/list?productCode=" + product_code, function (data) {
 
             const tableBody = document.getElementById('data-table-body');
@@ -216,6 +222,7 @@
                 row.innerHTML = `
                     <td>${item.projectNumber}</td>
                     <td>${item.productCode}</td>
+                    <td>${item.versionNumber}</td>
                     <td>${item.productName}</td>
                     <td>${item.componentCode}</td>
                     <td>${item.cableSpecification}</td>
@@ -243,6 +250,7 @@
                     base_row.innerHTML = `
                     <td>${item.projectNumber}</td>
                     <td>${item.productCode}</td>
+                    <td>${item.versionNumber}</td>
                     <td>${item.productName}</td>
                     <td>${input_number}</td>
                     <td>${item.componentCode}</td>
