@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="semantic/semantic.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="semantic/semantic.min.js"></script>
+</head>
+<body>
+<div class="center center-content">
+    <div class="ui segment">
+
+        <!-- 查询输入框 -->
+        <div class="ui labeled input">
+            <label class="ui label" for="productCode">产品编码:</label>
+            <input type="text" placeholder="产品编码" id="productCode">
+        </div>
+
+        <div class="ui labeled input">
+            <label class="ui label" for="number">生产数量:</label>
+            <input type="text" placeholder="生产数量" id="number">
+        </div>
+
+        <button class="ui primary button" id="searchButton">查询</button>
+
+        <button class="ui primary button" id="printButton">打印</button>
+
+        <button class="ui primary button" id="importButton">导入</button>
+
+
+        <h3></h3>
+        <table class="ui celled table">
+            <thead>
+            <tr>
+                <th style="width: 60px">项目</th>
+                <th>产品编码</th>
+                <th>产品版本</th>
+                <th>产品名称</th>
+                <th>子件编码</th>
+
+                <th>线缆规格型号</th>
+                <th>线号（+-）</th>
+                <th>长度/mm</th>
+                <th>左剥外皮/mm</th>
+                <th>左剥内皮/mm</th>
+                <th>右剥外皮/mm</th>
+                <th>右剥内皮/mm</th>
+
+                <th>标记/喷码</th>
+                <th>左剥外皮/mm</th>
+                <th>左屏蔽处理/mm</th>
+                <th>左剥内皮/mm</th>
+                <th>右剥外皮/mm</th>
+                <th>右屏蔽处理/mm</th>
+                <th>右剥内皮/mm</th>
+                <th class="center aligned" style="width: 60px">操作</th>
+            </tr>
+            </thead>
+            <tbody id="data-table-body">
+            <!-- Data will be dynamically populated here -->
+            </tbody>
+        </table>
+
+
+    </div>
+
+    <!-- 模态框 -->
+    <div class="ui modal" id="myModal">
+        <i class="close icon"></i>
+        <div class="header">
+            导入Excel
+        </div>
+        <div class="content">
+            <form id="feedbackForm">
+                <div class="ui form">
+                    <div class="field">
+                        <label>上传Excel</label>
+                        <input type="file" name="file">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="actions">
+            <div class="ui button" id="cancelButton">取消</div>
+            <button type="button" class="ui primary button" id="saveButton">上传</button>
+        </div>
+    </div>
+
+    <div class="ui large  modal" id="myModal1">
+        <i class="close icon"></i>
+        <div class="header">
+            打印
+        </div>
+        <div class="content">
+            <div class="field">
+                <table class="ui celled table">
+                    <thead>
+                    <tr>
+                        <th style="text-align: center">基础信息</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <table class="ui celled table">
+                                <thead>
+                                <tr>
+                                    <th>项目</th>
+                                    <th>产品编码</th>
+                                    <th>产品版本</th>
+                                    <th>产品名称</th>
+                                    <th>生产数量</th>
+                                    <th>子件编码</th>
+                                    <th>线缆规格型号</th>
+                                    <th>线号（+-）</th>
+                                </tr>
+                                </thead>
+                                <tbody id="base-info"></tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="field">
+                <table class="ui celled table">
+                    <thead>
+                    <tr>
+                        <th style="text-align: center">切线工艺参数</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <table class="ui celled table">
+                                <thead>
+                                <tr>
+                                    <th>长度mm</th>
+                                    <th>左剥外皮mm</th>
+                                    <th>左剥内皮mm</th>
+                                    <th>右剥外皮mm</th>
+                                    <th>右剥内皮mm</th>
+                                    <th>标记/喷码</th>
+                                </tr>
+                                </thead>
+                                <tbody id="peel-info"></tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="field">
+                <table class="ui celled table">
+                    <thead>
+                    <tr>
+                        <th style="text-align: center">线缆处理工艺参数</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <table class="ui celled table">
+                                <thead>
+                                <tr>
+                                    <th>左剥外皮mm</th>
+                                    <th>左屏蔽处理mm</th>
+                                    <th>左剥内皮mm</th>
+                                    <th>右剥外皮mm</th>
+                                    <th>右屏蔽处理mm</th>
+                                    <th>右剥内皮mm</th>
+                                </tr>
+                                </thead>
+                                <tbody id="process-info"></tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+        <div class="actions">
+
+        </div>
+    </div>
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        search('',0)
+    });
+
+    $('#searchButton').click(function () {
+        var productCode = $('#productCode').val();
+        search(productCode, 1)
+    })
+
+    function search(product_code, flag) {
+        $("#data-table-body").empty();
+        $("#base-info").empty();
+        $("#peel-info").empty();
+        $("#process-info").empty();
+
+        var input_number = $('#number').val();
+
+        console.log(product_code, product_code=='')
+
+        $.get("/cable/list?productCode=" + product_code, function (data) {
+
+            const tableBody = document.getElementById('data-table-body');
+
+            const baseBody = document.getElementById('base-info');
+            const peelBody = document.getElementById('peel-info');
+            const processBody = document.getElementById('process-info');
+            // Iterate through the data and create list items
+            $.each(data.list, function (index, item) {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.projectNumber}</td>
+                    <td>${item.productCode}</td>
+                    <td>${item.versionNumber}</td>
+                    <td>${item.productName}</td>
+                    <td>${item.componentCode}</td>
+                    <td>${item.cableSpecification}</td>
+                    <td>${item.lineNumber}</td>
+                    <td>${item.length}</td>
+                    <td>${item.leftPeelOuter}</td>
+                    <td>${item.leftPeelInner}</td>
+                    <td>${item.rightPeelOuter}</td>
+                    <td>${item.rightPeelInner}</td>
+                    <td>${item.sprayCode}</td>
+                    <td>${item.leftPeelOuterProcess}</td>
+                    <td>${item.leftShieldProcess}</td>
+                    <td>${item.leftPeelInnerProcess}</td>
+                    <td>${item.rightPeelOuterProcess}</td>
+                    <td>${item.rightShieldProcess}</td>
+                    <td>${item.rightPeelInnerProcess}</td>
+                    <td><a href="/detail.html?id=${item.id}">详情</a></td>
+                  `;
+                tableBody.appendChild(row);
+
+                if(flag == 1){
+
+
+                    const base_row = document.createElement('tr');
+                    base_row.innerHTML = `
+                    <td>${item.projectNumber}</td>
+                    <td>${item.productCode}</td>
+                    <td>${item.versionNumber}</td>
+                    <td>${item.productName}</td>
+                    <td>${input_number}</td>
+                    <td>${item.componentCode}</td>
+                    <td>${item.cableSpecification}</td>
+                    <td>${item.lineNumber}</td>
+                  `;
+
+                    baseBody.appendChild(base_row);
+
+
+                    const peel_row = document.createElement('tr');
+                    peel_row.innerHTML = `<td>${item.length}</td>
+                    <td>${item.leftPeelOuter}</td>
+                    <td>${item.leftPeelInner}</td>
+                    <td>${item.rightPeelOuter}</td>
+                    <td>${item.rightPeelInner}</td>
+                    <td>${item.sprayCode}</td>`;
+
+                    peelBody.appendChild(peel_row);
+
+                    const process_row = document.createElement('tr');
+                    process_row.innerHTML = `<td>${item.leftPeelOuterProcess}</td>
+                    <td>${item.leftShieldProcess}</td>
+                    <td>${item.leftPeelInnerProcess}</td>
+                    <td>${item.rightPeelOuterProcess}</td>
+                    <td>${item.rightShieldProcess}</td>
+                    <td>${item.rightPeelInnerProcess}</td>`;
+
+                    processBody.appendChild(process_row);
+
+                }
+
+                //$("#data-list").append("<li class='item'>" + item.name + "</li>");
+            });
+
+        });
+
+    }
+
+
+    $('#importButton').click(function () {
+        $('#myModal').modal('show'); // 显示模态框
+    });
+
+    $('#cancelButton').click(function () {
+        $('#myModal').modal('hide'); // 隐藏模态框
+    })
+
+    // 手动触发AJAX
+    $('#saveButton').click(function() {
+        // 获取表单数据
+        var formData = new FormData(document.getElementById('feedbackForm'));
+
+        // 手动触发AJAX请求
+        $.ajax({
+            url: '/cable/upload',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                // 处理保存成功的响应
+                location.reload();
+            },
+            error: function(error) {
+                // 处理保存失败的情况
+            }
+        });
+    });
+
+    $('#printButton').click(function() {
+        var productCode = $('#productCode').val();
+        search(productCode, 1)
+
+        $('#myModal1').modal('show'); // 显示模态框
+        setTimeout(function () {
+            window.print();
+        }, 500);
+    });
+
+</script>
+
+</body>
+</html>

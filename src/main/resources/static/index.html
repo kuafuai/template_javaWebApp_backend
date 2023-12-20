@@ -1,337 +1,315 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="semantic/semantic.min.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="semantic/semantic.min.js"></script>
+    <meta charset="utf-8">
+    <title>常州中电新能</title>
+    <meta content="demo" name="description">
+
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="css/index.css">
+    <script src="js/vue.min.js"></script>
+
+
+    <!-- 引入组件库 -->
+    <script src="js/index.js"></script>
+    <script src="js/axios.min.js"></script>
+    <script src="js/print.js"></script>
+
 </head>
 <body>
-<div class="center center-content">
-    <div class="ui segment">
+<div id="app">
+    <el-row>
+        <el-col>
+            <el-form :inline="true" :model="searchParams" class="demo-form-inline">
+                <el-form-item label="产品编码:">
+                    <el-input v-model="searchParams.productCode" placeholder="产品编码"></el-input>
+                </el-form-item>
+                <el-form-item label="生产数量:">
+                    <el-input v-model="searchParams.number" placeholder="生产数量"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" icon="Search" @click="handleQuery">查询</el-button>
 
-        <!-- 查询输入框 -->
-        <div class="ui labeled input">
-            <label class="ui label" for="productCode">产品编码:</label>
-            <input type="text" placeholder="产品编码" id="productCode">
-        </div>
+                    <el-button type="warning" icon="el-icon-printer" plain @click="handlePrint">打印</el-button>
+                    <el-button type="info" icon="el-icon-upload" plain @click="handleImport">导入</el-button>
+                </el-form-item>
+            </el-form>
+        </el-col>
+    </el-row>
+    <el-row>
+        <el-col>
+            <el-table :data="tableData" border style="width: 100%">
+                <el-table-column fixed width="80" label="项目" prop="projectNumber"></el-table-column>
+                <el-table-column fixed width="150" label="产品编码" prop="productCode"></el-table-column>
+                <el-table-column fixed width="100" label="产品版本" prop="versionNumber"></el-table-column>
+                <el-table-column width="200" label="产品名称" prop="productName"></el-table-column>
+                <el-table-column width="150" label="子件编码" prop="componentCode"></el-table-column>
 
-        <div class="ui labeled input">
-            <label class="ui label" for="number">生产数量:</label>
-            <input type="text" placeholder="生产数量" id="number">
-        </div>
+                <el-table-column width="600" label="线缆规格型号" prop="cableSpecification"></el-table-column>
+                <el-table-column width="100" label="线号（+-）" prop="lineNumber"></el-table-column>
+                <el-table-column width="100" label="长度/mm" prop="length"></el-table-column>
 
-        <button class="ui primary button" id="searchButton">查询</button>
+                <el-table-column width="100" label="左剥外皮/mm" prop="leftPeelOuter"></el-table-column>
+                <el-table-column width="100" label="左剥内皮/mm" prop="leftPeelInner"></el-table-column>
+                <el-table-column width="100" label="右剥外皮/mm" prop="rightPeelOuter"></el-table-column>
+                <el-table-column width="100" label="右剥内皮/mm" prop="rightPeelInner"></el-table-column>
 
-        <button class="ui primary button" id="printButton">打印</button>
+                <el-table-column width="100" label="标记/喷码" prop="sprayCode"></el-table-column>
+                <el-table-column width="100" label="左剥外皮/mm" prop="leftPeelOuterProcess"></el-table-column>
+                <el-table-column width="100" label="左屏蔽处理/mm" prop="leftShieldProcess"></el-table-column>
+                <el-table-column width="100" label="左剥内皮/mm" prop="leftPeelInnerProcess"></el-table-column>
+                <el-table-column width="100" label="右剥外皮/mm" prop="rightPeelOuterProcess"></el-table-column>
+                <el-table-column width="100" label="右屏蔽处理/mm" prop="rightShieldProcess"></el-table-column>
+                <el-table-column width="100" label="右剥内皮/mm" prop="rightPeelInnerProcess"></el-table-column>
+                <el-table-column width="100" label="操作" fixed="right">
+                    <template slot-scope="scope">
+                        <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <el-pagination
+                    :current-page="searchParams.pageNum"
+                    :page-size="searchParams.pageSize"
+                    :page-sizes="[10,20,30]"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="total"
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentPageChange" style="margin-top: 20px">
+            </el-pagination>
+        </el-col>
+    </el-row>
 
-        <button class="ui primary button" id="importButton">导入</button>
+    <el-dialog :title="upload.title" :visible.sync="upload.open">
+        <el-upload
+                class="upload-demo"
+                ref="upload"
+                :limit="1"
+                accept=".xlsx, .xls"
+                action="/cable/upload"
+                :on-progress="handleFileUploadProgress"
+                :on-success="handleFileSuccess"
+                :auto-upload="false">
+            <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+            <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器
+            </el-button>
+            <div slot="tip" class="el-upload__tip">只能上传xls文件，且不超过10M</div>
+        </el-upload>
+    </el-dialog>
 
-
-        <h3></h3>
-        <table class="ui celled table">
-            <thead>
-            <tr>
-                <th style="width: 60px">项目</th>
-                <th>产品编码</th>
-                <th>产品版本</th>
-                <th>产品名称</th>
-                <th>子件编码</th>
-
-                <th>线缆规格型号</th>
-                <th>线号（+-）</th>
-                <th>长度/mm</th>
-                <th>左剥外皮/mm</th>
-                <th>左剥内皮/mm</th>
-                <th>右剥外皮/mm</th>
-                <th>右剥内皮/mm</th>
-
-                <th>标记/喷码</th>
-                <th>左剥外皮/mm</th>
-                <th>左屏蔽处理/mm</th>
-                <th>左剥内皮/mm</th>
-                <th>右剥外皮/mm</th>
-                <th>右屏蔽处理/mm</th>
-                <th>右剥内皮/mm</th>
-                <th class="center aligned" style="width: 60px">操作</th>
-            </tr>
-            </thead>
-            <tbody id="data-table-body">
-            <!-- Data will be dynamically populated here -->
-            </tbody>
-        </table>
-
-
-    </div>
-
-    <!-- 模态框 -->
-    <div class="ui modal" id="myModal">
-        <i class="close icon"></i>
-        <div class="header">
-            导入Excel
-        </div>
-        <div class="content">
-            <form id="feedbackForm">
-                <div class="ui form">
-                    <div class="field">
-                        <label>上传Excel</label>
-                        <input type="file" name="file">
-                    </div>
+    <el-dialog id="show_detail_info" :title="infoDetail.title" :visible.sync="infoDetail.open" width="70%"
+               append-to-body="true">
+        <el-row>
+            <el-col :span="24">
+                <div class="grid-content bg-purple" style="justify-content: center;display: flex;align-items: center;">
+                    基础信息
                 </div>
-            </form>
-        </div>
-        <div class="actions">
-            <div class="ui button" id="cancelButton">取消</div>
-            <button type="button" class="ui primary button" id="saveButton">上传</button>
-        </div>
-    </div>
+            </el-col>
+            <el-col>
+                <el-table :data="infoDetail.info" border style="width: 100%">
+                    <el-table-column width="100" label="项目" prop="projectNumber"></el-table-column>
+                    <el-table-column width="150" label="产品编码" prop="productCode"></el-table-column>
+                    <el-table-column width="100" label="产品版本" prop="versionNumber"></el-table-column>
+                    <el-table-column width="200" label="产品名称" prop="productName"></el-table-column>
+                    <el-table-column width="80" label="生产数量" v-if="infoDetail.showNumber">
+                        <template slot-scope="scope">
+                            {{infoDetail.number}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column width="150" label="子件编码" prop="componentCode"></el-table-column>
+                    <el-table-column label="线缆规格型号" prop="cableSpecification"></el-table-column>
+                    <el-table-column width="100" label="线号（+-）" prop="lineNumber"></el-table-column>
+                </el-table>
+            </el-col>
+        </el-row>
+        <el-row>
+            <el-col :span="24">
+                <div class="grid-content bg-purple" style="justify-content: center;display: flex;align-items: center;">
+                    切线工艺参数
+                </div>
+            </el-col>
+            <el-col>
+                <el-table :data="infoDetail.info" border style="width: 100%">
+                    <el-table-column label="长度/mm" prop="length"></el-table-column>
 
-    <div class="ui large  modal" id="myModal1">
-        <i class="close icon"></i>
-        <div class="header">
-            打印
-        </div>
-        <div class="content">
-            <div class="field">
-                <table class="ui celled table">
-                    <thead>
-                    <tr>
-                        <th style="text-align: center">基础信息</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>
-                            <table class="ui celled table">
-                                <thead>
-                                <tr>
-                                    <th>项目</th>
-                                    <th>产品编码</th>
-                                    <th>产品版本</th>
-                                    <th>产品名称</th>
-                                    <th>生产数量</th>
-                                    <th>子件编码</th>
-                                    <th>线缆规格型号</th>
-                                    <th>线号（+-）</th>
-                                </tr>
-                                </thead>
-                                <tbody id="base-info"></tbody>
-                            </table>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
+                    <el-table-column label="左剥外皮/mm" prop="leftPeelOuter"></el-table-column>
+                    <el-table-column label="左剥内皮/mm" prop="leftPeelInner"></el-table-column>
+                    <el-table-column label="右剥外皮/mm" prop="rightPeelOuter"></el-table-column>
+                    <el-table-column label="右剥内皮/mm" prop="rightPeelInner"></el-table-column>
 
-            <div class="field">
-                <table class="ui celled table">
-                    <thead>
-                    <tr>
-                        <th style="text-align: center">切线工艺参数</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>
-                            <table class="ui celled table">
-                                <thead>
-                                <tr>
-                                    <th>长度mm</th>
-                                    <th>左剥外皮mm</th>
-                                    <th>左剥内皮mm</th>
-                                    <th>右剥外皮mm</th>
-                                    <th>右剥内皮mm</th>
-                                    <th>标记/喷码</th>
-                                </tr>
-                                </thead>
-                                <tbody id="peel-info"></tbody>
-                            </table>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
+                    <el-table-column label="标记/喷码" prop="sprayCode"></el-table-column>
+                </el-table>
+            </el-col>
+        </el-row>
+        <el-row>
+            <el-col :span="24">
+                <div class="grid-content bg-purple" style="justify-content: center;display: flex;align-items: center;">
+                    线缆处理工艺参数
+                </div>
+            </el-col>
+            <el-col>
+                <el-table :data="infoDetail.info" border style="width: 100%">
+                    <el-table-column label="左剥外皮/mm" prop="leftPeelOuterProcess"></el-table-column>
+                    <el-table-column label="左屏蔽处理/mm" prop="leftShieldProcess"></el-table-column>
+                    <el-table-column label="左剥内皮/mm" prop="leftPeelInnerProcess"></el-table-column>
+                    <el-table-column label="右剥外皮/mm" prop="rightPeelOuterProcess"></el-table-column>
+                    <el-table-column label="右屏蔽处理/mm" prop="rightShieldProcess"></el-table-column>
+                    <el-table-column label="右剥内皮/mm" prop="rightPeelInnerProcess"></el-table-column>
+                </el-table>
+            </el-col>
+        </el-row>
 
-            <div class="field">
-                <table class="ui celled table">
-                    <thead>
-                    <tr>
-                        <th style="text-align: center">线缆处理工艺参数</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>
-                            <table class="ui celled table">
-                                <thead>
-                                <tr>
-                                    <th>左剥外皮mm</th>
-                                    <th>左屏蔽处理mm</th>
-                                    <th>左剥内皮mm</th>
-                                    <th>右剥外皮mm</th>
-                                    <th>右屏蔽处理mm</th>
-                                    <th>右剥内皮mm</th>
-                                </tr>
-                                </thead>
-                                <tbody id="process-info"></tbody>
-                            </table>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-
-        </div>
-        <div class="actions">
-
-        </div>
-    </div>
+    </el-dialog>
 
 </div>
-
+</body>
 <script>
-    $(document).ready(function () {
-        search('',0)
-    });
+    var vm = new Vue({
+        el: '#app',
+        data() {
+            return {
+                total: 0,
+                upload: {
+                    title: '导入',
+                    open: false
+                },
+                searchParams: {
+                    productCode: '',
+                    number: '',
+                    pageNum: 1,
+                    pageSize: 10,
+                },
+                tableData: [],
+                fileList: [],
+                infoDetail: {
+                    title: '',
+                    showNumber: false,
+                    open: false,
+                    number: '',
+                    info: []
+                }
+            }
+        },
+        methods: {
+            handlePrint() {
+                if (this.searchParams.productCode != '' && this.searchParams.number != '') {
 
-    $('#searchButton').click(function () {
-        var productCode = $('#productCode').val();
-        search(productCode, 1)
-    })
+                    axios.get('/cable/print', {params: this.searchParams}).then(resp => {
 
-    function search(product_code, flag) {
-        $("#data-table-body").empty();
-        $("#base-info").empty();
-        $("#peel-info").empty();
-        $("#process-info").empty();
+                        // this.infoDetail.showNumber = true;
+                        // this.infoDetail.number = this.searchParams.number;
+                        // this.infoDetail.info = resp.data.list;
+                        // this.infoDetail.title = "打印";
+                        // this.infoDetail.open = true;
 
-        var input_number = $('#number').val();
+                        const windowPrint = window.open('', '')
+                        windowPrint.document.write(resp.data.data);
+                        windowPrint.document.close();
+                        windowPrint.focus();
+                        windowPrint.print();
+                        windowPrint.close();
+                        this.searchParams.productCode = ''
+                        this.searchParams.number = ''
 
-        console.log(product_code, product_code=='')
-
-        $.get("/cable/list?productCode=" + product_code, function (data) {
-
-            const tableBody = document.getElementById('data-table-body');
-
-            const baseBody = document.getElementById('base-info');
-            const peelBody = document.getElementById('peel-info');
-            const processBody = document.getElementById('process-info');
-            // Iterate through the data and create list items
-            $.each(data.list, function (index, item) {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${item.projectNumber}</td>
-                    <td>${item.productCode}</td>
-                    <td>${item.versionNumber}</td>
-                    <td>${item.productName}</td>
-                    <td>${item.componentCode}</td>
-                    <td>${item.cableSpecification}</td>
-                    <td>${item.lineNumber}</td>
-                    <td>${item.length}</td>
-                    <td>${item.leftPeelOuter}</td>
-                    <td>${item.leftPeelInner}</td>
-                    <td>${item.rightPeelOuter}</td>
-                    <td>${item.rightPeelInner}</td>
-                    <td>${item.sprayCode}</td>
-                    <td>${item.leftPeelOuterProcess}</td>
-                    <td>${item.leftShieldProcess}</td>
-                    <td>${item.leftPeelInnerProcess}</td>
-                    <td>${item.rightPeelOuterProcess}</td>
-                    <td>${item.rightShieldProcess}</td>
-                    <td>${item.rightPeelInnerProcess}</td>
-                    <td><a href="/detail.html?id=${item.id}">详情</a></td>
-                  `;
-                tableBody.appendChild(row);
-
-                if(flag == 1){
-
-
-                    const base_row = document.createElement('tr');
-                    base_row.innerHTML = `
-                    <td>${item.projectNumber}</td>
-                    <td>${item.productCode}</td>
-                    <td>${item.versionNumber}</td>
-                    <td>${item.productName}</td>
-                    <td>${input_number}</td>
-                    <td>${item.componentCode}</td>
-                    <td>${item.cableSpecification}</td>
-                    <td>${item.lineNumber}</td>
-                  `;
-
-                    baseBody.appendChild(base_row);
-
-
-                    const peel_row = document.createElement('tr');
-                    peel_row.innerHTML = `<td>${item.length}</td>
-                    <td>${item.leftPeelOuter}</td>
-                    <td>${item.leftPeelInner}</td>
-                    <td>${item.rightPeelOuter}</td>
-                    <td>${item.rightPeelInner}</td>
-                    <td>${item.sprayCode}</td>`;
-
-                    peelBody.appendChild(peel_row);
-
-                    const process_row = document.createElement('tr');
-                    process_row.innerHTML = `<td>${item.leftPeelOuterProcess}</td>
-                    <td>${item.leftShieldProcess}</td>
-                    <td>${item.leftPeelInnerProcess}</td>
-                    <td>${item.rightPeelOuterProcess}</td>
-                    <td>${item.rightShieldProcess}</td>
-                    <td>${item.rightPeelInnerProcess}</td>`;
-
-                    processBody.appendChild(process_row);
-
+                    }).catch((err) => {
+                        console.log("11111", err)
+                    })
+                } else {
+                    this.$alert("<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>请输入 产品编号 和 生产数量 在打印</div>", "导入结果", {dangerouslyUseHTMLString: true});
                 }
 
-                //$("#data-list").append("<li class='item'>" + item.name + "</li>");
-            });
+            },
+            handleImport() {
+                this.upload.open = true;
+            },
+            handleClick(row) {
 
-        });
+                axios.get('/cable/' + row.id).then(resp => {
+                    this.infoDetail.open = true;
+                    this.infoDetail.title = "详细信息";
+                    this.infoDetail.showNumber = false;
+                    this.infoDetail.info = [resp.data.data]
+                }).catch((err) => {
+                    console.log("11111", err)
+                })
+            },
+            handleQuery() {
+                this.searchParams.pageNum = 1;
+                this.getList();
+            },
+            handleSizeChange(size) {
+                this.searchParams.pageSize = size;
+                this.getList();
+            },
+            handleCurrentPageChange(newPage) {
+                this.searchParams.pageNum = newPage;
 
+                this.getList();
+            },
+            getList() {
+                axios.get('/cable/list', {params: this.searchParams}).then(resp => {
+
+                    this.tableData = resp.data.list;
+                    this.total = resp.data.totalRecords;
+
+                }).catch((err) => {
+                    console.log("11111", err)
+                })
+            },
+            submitUpload() {
+                this.$refs.upload.submit();
+            },
+            handleFileUploadProgress(event, file, fileList) {
+                console.log(event)
+            },
+            handleFileSuccess(response, file, fileList) {
+                this.upload.open = false;
+                this.$refs.upload.clearFiles();
+                this.$alert("<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>成功导入：" + response.data + "</div>", "导入结果", {dangerouslyUseHTMLString: true});
+                this.getList();
+            }
+        },
+        mounted() {
+
+        },
+        created() {
+            this.getList();
+        }
+    });
+</script>
+<style>
+    .el-row {
+        margin-bottom: 20px;
+
+    &
+    :last-child {
+        margin-bottom: 0;
     }
 
+    }
+    .el-col {
+        border-radius: 4px;
+    }
 
-    $('#importButton').click(function () {
-        $('#myModal').modal('show'); // 显示模态框
-    });
+    .bg-purple-dark {
+        background: #99a9bf;
+    }
 
-    $('#cancelButton').click(function () {
-        $('#myModal').modal('hide'); // 隐藏模态框
-    })
+    .bg-purple {
+        background: #d3dce6;
+    }
 
-    // 手动触发AJAX
-    $('#saveButton').click(function() {
-        // 获取表单数据
-        var formData = new FormData(document.getElementById('feedbackForm'));
+    .bg-purple-light {
+        background: #e5e9f2;
+    }
 
-        // 手动触发AJAX请求
-        $.ajax({
-            url: '/cable/upload',
-            type: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(response) {
-                // 处理保存成功的响应
-                location.reload();
-            },
-            error: function(error) {
-                // 处理保存失败的情况
-            }
-        });
-    });
+    .grid-content {
+        border-radius: 4px;
+        min-height: 36px;
+    }
 
-    $('#printButton').click(function() {
-        var productCode = $('#productCode').val();
-        search(productCode, 1)
-
-        $('#myModal1').modal('show'); // 显示模态框
-        setTimeout(function () {
-            window.print();
-        }, 500);
-    });
-
-</script>
-
-</body>
+    .row-bg {
+        padding: 10px 0;
+        background-color: #f9fafc;
+    }
+</style>
 </html>
