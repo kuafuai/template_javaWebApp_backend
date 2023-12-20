@@ -2,6 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.aiassistant.mapper.CableMapper">
 
+    <insert id="batchInsert">
+        INSERT INTO cable (project_number, product_code, product_name, component_code, cable_specification, line_number, length, 
+                           left_peel_outer, left_peel_inner, right_peel_outer, right_peel_inner, spray_code, 
+                           left_peel_outer_process, left_shield_process, left_peel_inner_process, right_peel_outer_process, right_shield_process, 
+                           right_peel_inner_process,is_default,version_number)
+        values 
+            <foreach collection="list" item="user" separator=",">
+                (#{user.projectNumber}, #{user.productCode}, #{user.productName}, #{user.componentCode}, #{user.cableSpecification}, #{user.lineNumber},
+                 #{user.length},#{user.leftPeelOuter}, #{user.leftPeelInner}, #{user.rightPeelOuter}, #{user.rightPeelInner}, #{user.sprayCode},
+                 #{user.leftPeelOuterProcess},#{user.leftShieldProcess}, #{user.leftPeelInnerProcess},#{user.rightPeelOuterProcess},
+                 #{user.rightShieldProcess}, #{user.rightPeelInnerProcess},#{user.isDefault},#{user.versionNumber})
+            </foreach>
+        
+    </insert>
+
     <select id="countCable" resultType="java.lang.Integer">
         select count(*)
         from cable

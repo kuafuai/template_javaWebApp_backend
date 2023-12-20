@@ -81,9 +81,11 @@
 
     <el-dialog :title="upload.title" :visible.sync="upload.open">
         <el-upload
+                v-loading="upload.loading"
                 class="upload-demo"
                 ref="upload"
                 :limit="1"
+                :disabled="upload.disabled"
                 accept=".xlsx, .xls"
                 action="/cable/upload"
                 :on-progress="handleFileUploadProgress"
@@ -170,7 +172,9 @@
                 total: 0,
                 upload: {
                     title: '导入',
-                    open: false
+                    open: false,
+                    disabled: false,
+                    loading: false
                 },
                 searchParams: {
                     productCode: '',
@@ -259,13 +263,20 @@
                 this.$refs.upload.submit();
             },
             handleFileUploadProgress(event, file, fileList) {
-                console.log(event)
+                this.upload.disabled = true;
+                this.upload.loading = true;
             },
             handleFileSuccess(response, file, fileList) {
-                this.upload.open = false;
-                this.$refs.upload.clearFiles();
-                this.$alert("<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>成功导入：" + response.data + "</div>", "导入结果", {dangerouslyUseHTMLString: true});
-                this.getList();
+                this.upload.disabled = false;
+                this.upload.loading = false;
+                if (response.code == 0) {
+                    this.upload.open = false;
+                    this.$refs.upload.clearFiles();
+                    this.$alert("<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>成功导入：" + response.data + "</div>", "导入结果", {dangerouslyUseHTMLString: true});
+                    this.getList();
+                } else {
+                    this.$alert("<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>失败：" + response.msg + "</div>", "导入结果", {dangerouslyUseHTMLString: true});
+                }
             }
         },
         mounted() {

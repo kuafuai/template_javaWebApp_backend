@@ -13,6 +13,8 @@ public interface CableMapper {
             "VALUES (#{projectNumber}, #{productCode}, #{productName}, #{componentCode}, #{cableSpecification}, #{lineNumber}, #{length}, #{leftPeelOuter}, #{leftPeelInner}, #{rightPeelOuter}, #{rightPeelInner}, #{sprayCode}, #{leftPeelOuterProcess}, #{leftShieldProcess}, #{leftPeelInnerProcess}, #{rightPeelOuterProcess}, #{rightShieldProcess}, #{rightPeelInnerProcess}, #{isDefault},#{versionNumber})")
     Integer insertCable(Cable cable);
 
+    Integer batchInsert(List<Cable> list);
+
 
     int countCable(Cable cable);
 

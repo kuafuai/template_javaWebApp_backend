@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -68,6 +69,7 @@ public class CableServiceImpl implements CableService {
 
         List<List<String>> excelData = ExcelUtils.readExcel(file);
         int success = 0;
+        List<Cable> batchList = new ArrayList<>();
         for (int i = 2; i < excelData.size(); i++) {
             List<String> rowList = excelData.get(i);
             String projectNumber = String.valueOf(rowList.get(0));
@@ -119,8 +121,22 @@ public class CableServiceImpl implements CableService {
             cable.setIsDefault(isDefault);
             cable.setVersionNumber(versionNumber);
 
-            cableMapper.insertCable(cable);
+            if (batchList.size() >= 100) {
+                System.out.println("================ begin batch insert :" + batchList.size());
+                cableMapper.batchInsert(batchList);
+                batchList.clear();
+                System.out.println("================ begin batch insert : " + batchList.size());
+            } else {
+                batchList.add(cable);
+            }
+
             success++;
+        }
+        if (batchList.size() > 0) {
+            System.out.println("end ================ begin batch insert : " + batchList.size());
+            cableMapper.batchInsert(batchList);
+            batchList.clear();
+            System.out.println("end ================ begin batch insert : " + batchList.size());
         }
 
         return ResultModel.ofSuccess(success);
@@ -132,6 +148,8 @@ public class CableServiceImpl implements CableService {
         Cable cable = new Cable();
         cable.setProductCode(productCode);
         cable.setIsDefault(true);
+        cable.setStart(0);
+        cable.setLimit(1000);
         List<Cable> list = cableMapper.getCableList(cable);
 
         String baseBodyFormatter = "<tr>\n" +
