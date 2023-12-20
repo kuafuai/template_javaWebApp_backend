@@ -26,4 +26,7 @@ public class Cable {
     private String rightPeelInnerProcess;
     private Boolean isDefault;
     private String versionNumber;
+
+    private int start;
+    private int limit;
 }

@@ -13,8 +13,11 @@ public interface CableMapper {
             "VALUES (#{projectNumber}, #{productCode}, #{productName}, #{componentCode}, #{cableSpecification}, #{lineNumber}, #{length}, #{leftPeelOuter}, #{leftPeelInner}, #{rightPeelOuter}, #{rightPeelInner}, #{sprayCode}, #{leftPeelOuterProcess}, #{leftShieldProcess}, #{leftPeelInnerProcess}, #{rightPeelOuterProcess}, #{rightShieldProcess}, #{rightPeelInnerProcess}, #{isDefault},#{versionNumber})")
     Integer insertCable(Cable cable);
 
-    @Select("SELECT * FROM cable")
-    List<Cable> getCableList();
+
+    int countCable(Cable cable);
+
+    List<Cable> getCableList(Cable cable);
+
 
     @Select("SELECT * FROM cable where product_code like '%' || #{productCode} || '%'")
     List<Cable> getCableListByProductCode(String productCode);

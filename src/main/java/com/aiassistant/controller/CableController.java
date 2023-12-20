@@ -26,8 +26,10 @@ public class CableController {
     }
 
     @GetMapping("/list")
-    public ResultPageModel<Cable> getCableList(@RequestParam("productCode") String productCode) {
-        return cableService.getCableListByProductCode(productCode);
+    public ResultPageModel<Cable> getCableList(@RequestParam(value = "productCode", required = false, defaultValue = "") String productCode,
+                                               @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum,
+                                               @RequestParam(value = "pageSize", required = false, defaultValue = "5") Integer pageSize) {
+        return cableService.getCableListByProductCode(productCode, pageNum, pageSize);
     }
 
     @GetMapping("/{id}")
@@ -39,6 +41,16 @@ public class CableController {
     public ResultModel uploadFile(@RequestParam("file") MultipartFile file) {
 
         return cableService.uploadExcel(file);
+    }
+
+    @GetMapping("/print")
+    public ResultModel print(@RequestParam(value = "productCode", required = false, defaultValue = "") String productCode,
+                             @RequestParam(value = "number", required = false, defaultValue = "") String number,
+                             @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum,
+                             @RequestParam(value = "pageSize", required = false, defaultValue = "5") Integer pageSize) {
+
+        String html = cableService.print(productCode, number);
+        return ResultModel.ofSuccess(html);
     }
 
 }

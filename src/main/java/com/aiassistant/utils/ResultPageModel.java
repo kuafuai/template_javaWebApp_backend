@@ -41,8 +41,8 @@ public class ResultPageModel<T> {
         if (pageNo == null || pageNo < 1) {
             pageNo = 1;
         }
-        if (pageSize == null || pageSize < 10) {
-            pageSize = 10;
+        if (pageSize == null || pageSize < 5) {
+            pageSize = 5;
         }
         this.pageNo = pageNo;
         this.pageSize = pageSize;

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aiassistant.mapper.CableMapper">
+
+    <select id="countCable" resultType="java.lang.Integer">
+        select count(*)
+        from cable
+        <where>
+            <if test="isDefault != null ">
+                and is_default = #{isDefault}
+            </if>
+            <if test="productCode != null and productCode != ''">
+                and product_code like '%' || #{productCode} || '%'
+            </if>
+        </where>
+    </select>
+    <select id="getCableList" resultType="com.aiassistant.model.Cable">
+        select *
+        from cable
+        <where>
+            <if test="isDefault != null ">
+                and is_default = #{isDefault}
+            </if>
+            <if test="productCode != null and productCode != ''">
+                and product_code like '%' || #{productCode} || '%'
+            </if>
+        </where>
+        order by id desc
+        <if test="limit>0">
+            limit #{start}, #{limit}
+        </if>
+    </select>
+</mapper>

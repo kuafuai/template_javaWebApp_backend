@@ -7,9 +7,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface CableService {
     ResultModel addCable(Cable cable);
+
     ResultPageModel<Cable> getCableList();
-    ResultPageModel<Cable> getCableListByProductCode(String productCode);
+
+    ResultPageModel<Cable> getCableListByProductCode(String productCode, Integer pageNum, Integer pageSize);
+
     ResultModel<Cable> getCableById(Integer id);
 
     ResultModel uploadExcel(MultipartFile file);
+
+    String print(String productCode, String number);
 }
