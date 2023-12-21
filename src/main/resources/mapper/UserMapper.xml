@@ -1,0 +1,45 @@
+<mapper namespace="com.aiassistant.mapper.UserMapper">
+    <!-- Insert a new user into the user table -->
+    <insert id="insertUser" parameterType="com.aiassistant.model.User">
+        <!-- Use parameterized query to prevent SQL injection -->
+        INSERT INTO user (id, username, password, gender, age, create_time)
+        VALUES (#{id}, #{username}, #{password}, #{gender}, #{age}, #{createTime})
+    </insert>
+
+    <!-- Update an existing user in the user table -->
+    <update id="updateUser" parameterType="com.aiassistant.model.User">
+        <!-- Use parameterized query to prevent SQL injection -->
+        UPDATE user
+        SET username = #{username}, password = #{password}, gender = #{gender}, age = #{age}, create_time = #{createTime}
+        WHERE id = #{id}
+    </update>
+
+    <!-- Delete a user from the user table -->
+    <delete id="deleteUser" parameterType="java.lang.Integer">
+        <!-- Use parameterized query to prevent SQL injection -->
+        DELETE FROM user
+        WHERE id = #{id}
+    </delete>
+
+    <!-- Select a user by id from the user table -->
+    <select id="selectById" parameterType="java.lang.Integer" resultType="com.aiassistant.model.User">
+        <!-- Use parameterized query to prevent SQL injection -->
+        SELECT id, username, password, gender, age, create_time
+        FROM user
+        WHERE id = #{id}
+    </select>
+
+    <!-- Select a user by username from the user table -->
+    <select id="selectByUsername" parameterType="java.lang.String" resultType="com.aiassistant.model.User">
+        <!-- Use parameterized query to prevent SQL injection -->
+        SELECT id, username, password, gender, age, create_time
+        FROM user
+        WHERE username = #{username}
+    </select>
+
+    <!-- Select all users from the user table -->
+    <select id="selectAll" resultType="com.aiassistant.model.User">
+        SELECT id, username, password, gender, age, create_time
+        FROM user
+    </select>
+</mapper>

@@ -1,0 +1,1 @@
+在`com.aiassistant.mapper`包中创建`UserMapper`接口，用于定义用户数据的持久化操作。

@@ -1,0 +1,1 @@
+在`com.aiassistant.model`包中创建`User`类，用于表示用户信息。

@@ -1,0 +1,1 @@
+在`com.aiassistant.controller`包中创建`UserController`类，用于处理用户相关的HTTP请求。
