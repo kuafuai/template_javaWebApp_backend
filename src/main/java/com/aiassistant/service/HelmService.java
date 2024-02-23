@@ -4,14 +4,12 @@ import com.aiassistant.utils.HelmUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.InputStream;
 import java.util.Map;
 
 @Service
 public class HelmService {
     public Map<String, Object> parseValueYaml(MultipartFile file) {
-        InputStream inputStream = file.getInputStream();
-        return HelmUtils.parseValueYaml(inputStream);
+        return HelmUtils.parseValueYaml(file);
     }
 
     public Map<String, Object> getHelmConfig() {
