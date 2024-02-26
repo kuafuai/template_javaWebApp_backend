@@ -1,33 +1,34 @@
 package com.aiassistant.service;
 
-import com.aiassistant.model.Demo;
-import com.aiassistant.utils.ResultModel;
-import com.aiassistant.utils.ResultPageModel;
+import com.aiassistant.mapper.DeviceMapper;
+import com.aiassistant.mqtt.MqttClient;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-/**
- * 业务逻辑层--demo Service
- */
-public interface DemoService {
+@Service
+public class DemoService {
+    private final DeviceMapper deviceMapper;
+    private final MqttClient mqttClient;
 
-    /**
-     * 添加一条Demo
-     *
-     * @param demo
-     */
-    ResultModel<Demo> addDemo(Demo demo);
+    @Autowired
+    public DemoService(DeviceMapper deviceMapper, MqttClient mqttClient) {
+        this.deviceMapper = deviceMapper;
+        this.mqttClient = mqttClient;
+    }
 
-    /**
-     * 获取所有
-     *
-     * @return
-     */
-    ResultPageModel<Demo> getDemoList();
+    public void connectDevice(String deviceId) {
+        deviceMapper.updateDeviceStatus(deviceId, "online");
+    }
 
-    /**
-     * 根据Id查询
-     *
-     * @param id
-     * @return
-     */
-    Demo getById(Integer id);
+    public void disconnectDevice(String deviceId) {
+        deviceMapper.updateDeviceStatus(deviceId, "offline");
+    }
+
+    public void sendDeviceMessage(String deviceId, String message) {
+        mqttClient.sendMessage(deviceId, message);
+    }
+
+    public void updateDeviceConfig(String deviceId, String config) {
+        deviceMapper.updateDeviceConfig(deviceId, config);
+    }
 }
