@@ -1,0 +1,1 @@
+在`com.aiassistant.model.File`文件中定义`File`类
