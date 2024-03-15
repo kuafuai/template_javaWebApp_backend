@@ -1,4 +1,4 @@
-package com.aiassistant.service.impl;
+package com.aiassistant.service;
 
 import com.aiassistant.mapper.StoreFeedbackMapper;
 import com.aiassistant.model.StoreFeedback;
