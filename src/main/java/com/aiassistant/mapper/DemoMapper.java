@@ -1,7 +1,1 @@
-package com.aiassistant.mapper;
-
-import com.aiassistant.model.Store;
-
-public interface DemoMapper {
-    Store insertStore(Store store);
-}
+在`com.aiassistant.mapper`包中的`DemoMapper`接口中添加`insertFeedback(Feedback)`方法

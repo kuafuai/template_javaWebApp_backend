@@ -1,0 +1,1 @@
+在`com.aiassistant.model`包中定义`Feedback`类

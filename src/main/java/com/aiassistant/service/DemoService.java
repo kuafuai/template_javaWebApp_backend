@@ -1,13 +1,1 @@
-package com.aiassistant.service;
-
-import com.aiassistant.model.Store;
-import com.aiassistant.utils.ResultModel;
-import com.aiassistant.utils.ResultPageModel;
-
-public interface DemoService {
-    ResultModel<Store> addStore(Store store);
-
-    ResultPageModel<Store> getStoreList();
-
-    ResultModel<Store> getStoreById(Integer id);
-}
+在`com.aiassistant.service`包中的`DemoService`接口中添加`addFeedback(Feedback)`方法
