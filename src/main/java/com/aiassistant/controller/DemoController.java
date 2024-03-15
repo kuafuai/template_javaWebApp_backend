@@ -1,36 +1,31 @@
 package com.aiassistant.controller;
 
-import com.aiassistant.model.Demo;
+import com.aiassistant.model.Store;
 import com.aiassistant.service.DemoService;
 import com.aiassistant.utils.ResultModel;
 import com.aiassistant.utils.ResultPageModel;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
-/**
- * 控制器层--DemoController
- */
 @RestController
-@RequiredArgsConstructor
-@Api(tags = "DemoController")
+@RequestMapping("/demo")
 public class DemoController {
 
-    private final DemoService demoService;
+    @Autowired
+    private DemoService demoService;
 
-    @PostMapping("/addDemo")
-    @ApiOperation(value = "Demo add")
-    public ResultModel addDemo(@RequestBody Demo demo) {
-        return demoService.addDemo(demo);
+    @PostMapping("/addStore")
+    public ResultModel addStore(@RequestBody Store store) {
+        return demoService.addStore(store);
     }
 
-    @GetMapping("/getDemoList")
-    @ApiOperation(value = "Get Demo list")
-    public ResultPageModel<Demo> getDemoList() {
-        return demoService.getDemoList();
+    @GetMapping("/getStoreList")
+    public ResultPageModel<Store> getStoreList() {
+        return demoService.getStoreList();
+    }
+
+    @GetMapping("/getStoreById")
+    public ResultModel<Store> getStoreById(@RequestParam Integer id) {
+        return demoService.getStoreById(id);
     }
 }
