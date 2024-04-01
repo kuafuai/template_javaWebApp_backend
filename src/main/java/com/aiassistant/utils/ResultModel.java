@@ -1,91 +1,82 @@
 package com.aiassistant.utils;
 
-import lombok.Data;
-
-/**
- * 控制层-对外返回数据结构
- *
- * @param <T>
- */
-@Data
 public class ResultModel<T> {
-
-    private Exception exception = null;
-    private T data = null;
+    private Exception exception;
+    private T data;
     private String msg;
     private Integer code;
 
-    public static <T> ResultModel ofResult(Integer code, String msg, T data) {
-        return ofResult(code, msg, data, null);
+    public ResultModel() {
     }
 
-    public static <T> ResultModel ofResult(Integer code, String msg, T data, Exception exception) {
-        ResultModel<T> resultModel = new ResultModel();
-        resultModel.setCode(code);
-        resultModel.setData(data);
-        resultModel.setMsg(msg);
-        resultModel.setException(exception);
-        return resultModel;
+    public ResultModel(Exception exception, T data, String msg, Integer code) {
+        this.exception = exception;
+        this.data = data;
+        this.msg = msg;
+        this.code = code;
     }
 
-    /**
-     * 创建成功返回
-     *
-     * @return
-     */
-    public static ResultModel ofSuccess() {
-
-        return ofSuccess(null);
+    public Exception getException() {
+        return exception;
     }
 
-    /**
-     * 创建成功返回-带返回数据
-     *
-     * @param data
-     * @param <T>
-     * @return
-     */
-    public static <T> ResultModel ofSuccess(T data) {
-
-        return ofSuccess(null, data);
+    public void setException(Exception exception) {
+        this.exception = exception;
     }
 
-    /**
-     * 创建成功返回-带返回信息和返回数据
-     *
-     * @param msg
-     * @param data
-     * @param <T>
-     * @return
-     */
-    public static <T> ResultModel ofSuccess(String msg, T data) {
-
-        return ofResult(0, msg, data);
+    public T getData() {
+        return data;
     }
 
-    /**
-     * 创建失败返回
-     *
-     * @return
-     */
-    public static ResultModel ofError() {
-
-        return ofError(null);
+    public void setData(T data) {
+        this.data = data;
     }
 
-    /**
-     * 创建失败返回-带返回信息
-     *
-     * @param msg
-     * @return
-     */
-    public static ResultModel ofError(String msg) {
-
-        return ofError(msg, null);
+    public String getMsg() {
+        return msg;
     }
 
-    public static ResultModel ofError(String msg, Exception exception) {
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
 
-        return ofResult(999, msg, null, exception);
+    public Integer getCode() {
+        return code;
+    }
+
+    public void setCode(Integer code) {
+        this.code = code;
+    }
+
+    public static <T> ResultModel<T> ofResult(Integer code, String msg, T data) {
+        return new ResultModel<>(null, data, msg, code);
+    }
+
+    public static <T> ResultModel<T> ofResult(Integer code, String msg, T data, Exception exception) {
+        return new ResultModel<>(exception, data, msg, code);
+    }
+
+    public static <T> ResultModel<T> ofSuccess() {
+        return ofResult(200, "success", null);
+    }
+
+    public static <T> ResultModel<T> ofSuccess(T data) {
+        return ofResult(200, "success", data);
+    }
+
+    public static <T> ResultModel<T> ofSuccess(String msg, T data) {
+        return ofResult(200, msg, data);
+    }
+
+    public static <T> ResultModel<T> ofError() {
+        return ofResult(500, "error", null);
+    }
+
+    public static <T> ResultModel<T> ofError(String msg) {
+        return ofResult(500, msg, null);
+    }
+
+    public static <T> ResultModel<T> ofError(String msg, Exception exception) {
+        return ofResult(500, msg, null, exception);
     }
 }
