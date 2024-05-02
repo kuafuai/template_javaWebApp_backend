@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aiassistant.mapper.DemoMapper">
+
+    <insert id="insertDemo" parameterType="com.aiassistant.model.Demo">
+        INSERT INTO role (role_name, role_type, upgrade_condition)
+        VALUES (#{roleName}, #{roleType}, #{upgradeCondition})
+    </insert>
+
+    <insert id="insertReward" parameterType="com.aiassistant.model.Reward">
+        INSERT INTO reward (reward_type, role_id, upgrade_condition, unfreeze_method)
+        VALUES (#{rewardType}, #{roleId}, #{upgradeCondition}, #{unfreezeMethod})
+    </insert>
+
+    <select id="getRoleList" resultType="com.aiassistant.model.Role">
+        SELECT * FROM role
+    </select>
+
+    <select id="getRewardList" resultType="com.aiassistant.model.Reward">
+        SELECT * FROM reward
+    </select>
+
+    <select id="getRewardListByRoleId" resultType="com.aiassistant.model.Reward">
+        SELECT * FROM reward WHERE role_id = #{roleId}
+    </select>
+
+    <select id="getRoleById" resultType="com.aiassistant.model.Role">
+        SELECT * FROM role WHERE id = #{id}
+    </select>
+
+    <select id="getRewardById" resultType="com.aiassistant.model.Reward">
+        SELECT * FROM reward WHERE id = #{id}
+    </select>
+
+</mapper>

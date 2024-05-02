@@ -1,33 +1,17 @@
 package com.aiassistant.service;
 
-import com.aiassistant.model.Demo;
+import com.aiassistant.model.Role;
+import com.aiassistant.model.Reward;
 import com.aiassistant.utils.ResultModel;
-import com.aiassistant.utils.ResultPageModel;
 
-/**
- * 业务逻辑层--demo Service
- */
+import java.util.List;
+
 public interface DemoService {
-
-    /**
-     * 添加一条Demo
-     *
-     * @param demo
-     */
-    ResultModel<Demo> addDemo(Demo demo);
-
-    /**
-     * 获取所有
-     *
-     * @return
-     */
-    ResultPageModel<Demo> getDemoList();
-
-    /**
-     * 根据Id查询
-     *
-     * @param id
-     * @return
-     */
-    Demo getById(Integer id);
+    ResultModel<Role> addRole(Role role);
+    ResultModel<Reward> addReward(Reward reward);
+    ResultModel<List<Role>> getRoleList();
+    ResultModel<List<Reward>> getRewardList();
+    ResultModel<List<Reward>> getRewardListByRoleId(int roleId);
+    ResultModel<Role> getRoleById(int id);
+    ResultModel<Reward> getRewardById(int id);
 }
