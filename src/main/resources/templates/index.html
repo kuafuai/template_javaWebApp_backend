@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Message Board</title>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="#">All</a></li>
+            <li><a href="#">Category 1</a></li>
+            <li><a href="#">Category 2</a></li>
+            <li><a href="#">Category 3</a></li>
+        </ul>
+    </nav>
+    <div>
+        <h1>Message List</h1>
+        <ul id="message-list">
+            <!-- Message list items will be dynamically added here -->
+        </ul>
+    </div>
+    <div id="message-detail">
+        <!-- Message detail will be dynamically added here -->
+    </div>
+    <script>
+        // Function to fetch message list by type
+        function fetchMessageListByType(messageType) {
+            fetch(`/demo/listByType?messageType=${messageType}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Clear existing message list
+                    const messageList = document.getElementById('message-list');
+                    messageList.innerHTML = '';
+
+                    // Add new message list items
+                    data.forEach(message => {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = message.demoName;
+                        listItem.addEventListener('click', () => {
+                            fetchMessageDetail(message.id);
+                        });
+                        messageList.appendChild(listItem);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+        // Function to fetch message detail by id
+        function fetchMessageDetail(id) {
+            fetch(`/demo/detail?id=${id}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Display message detail
+                    const messageDetail = document.getElementById('message-detail');
+                    messageDetail.textContent = data.demoName;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+        // Add event listeners to category links
+        const categoryLinks = document.querySelectorAll('nav ul li a');
+        categoryLinks.forEach(link => {
+            link.addEventListener('click', event => {
+                event.preventDefault();
+                const messageType = link.textContent;
+                fetchMessageListByType(messageType);
+            });
+        });
+
+        // Fetch initial message list
+        fetchMessageListByType('All');
+    </script>
+</body>
+</html>

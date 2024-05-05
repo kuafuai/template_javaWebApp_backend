@@ -4,33 +4,35 @@ import com.aiassistant.model.Demo;
 import com.aiassistant.service.DemoService;
 import com.aiassistant.utils.ResultModel;
 import com.aiassistant.utils.ResultPageModel;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * 控制器层--DemoController
- */
 @RestController
-@RequiredArgsConstructor
-@Api(tags = "DemoController")
+@RequestMapping("/demo")
 public class DemoController {
-
     private final DemoService demoService;
 
-    @PostMapping("/addDemo")
-    @ApiOperation(value = "Demo add")
-    public ResultModel addDemo(@RequestBody Demo demo) {
-        return demoService.addDemo(demo);
+    @Autowired
+    public DemoController(DemoService demoService) {
+        this.demoService = demoService;
     }
 
-    @GetMapping("/getDemoList")
-    @ApiOperation(value = "Get Demo list")
-    public ResultPageModel<Demo> getDemoList() {
-        return demoService.getDemoList();
+    @GetMapping("/listByType")
+    public ResultPageModel<Demo> getDemoListByType(@RequestParam String messageType,
+                                                   @RequestParam(defaultValue = "1") Integer pageNo,
+                                                   @RequestParam(defaultValue = "10") Integer pageSize) {
+        return demoService.getDemoListByType(messageType, pageNo, pageSize);
+    }
+
+    @GetMapping("/detail")
+    public ResultModel<Demo> getDemoDetail(@RequestParam Integer id) {
+        Demo demo = demoService.getById(id);
+        if (demo == null) {
+            return ResultModel.ofError("Demo not found");
+        }
+        return ResultModel.ofSuccess(demo);
     }
 }
