@@ -1,4 +1,5 @@
-```java
+import java.util.List;
+
 public class ResultPageModel<T> {
 
     private Integer totalRecords;
@@ -8,13 +9,19 @@ public class ResultPageModel<T> {
     private Integer firstIndex;
     private List<T> list;
 
+    public ResultPageModel() {
+    }
+
+    public ResultPageModel(List<T> list) {
+        this.list = list;
+    }
+
     public Integer getFirstIndex() {
         return firstIndex;
     }
 
     public static <T> ResultPageModel<T> of(List<T> list) {
-        ResultPageModel<T> resultPageModel = new ResultPageModel<>();
-        resultPageModel.setList(list);
+        ResultPageModel<T> resultPageModel = new ResultPageModel<>(list);
         return resultPageModel;
     }
 
@@ -58,4 +65,15 @@ public class ResultPageModel<T> {
         this.totalPage = totalPage;
     }
 
+    @Override
+    public String toString() {
+        return "ResultPageModel{" +
+                "totalRecords=" + totalRecords +
+                ", pageNo=" + pageNo +
+                ", pageSize=" + pageSize +
+                ", totalPage=" + totalPage +
+                ", firstIndex=" + firstIndex +
+                ", list=" + list +
+                '}';
+    }
 }

@@ -1,50 +1,17 @@
-package com.aiassistant.utils;
-
 public class ResultModel<T> {
     private Exception exception;
     private T data;
     private String msg;
     private Integer code;
 
-    public static <T> ResultModel<T> ofResult(Integer code, String msg, T data) {
-        ResultModel<T> resultModel = new ResultModel<>();
-        resultModel.setCode(code);
-        resultModel.setMsg(msg);
-        resultModel.setData(data);
-        return resultModel;
+    public ResultModel() {
     }
 
-    public static <T> ResultModel<T> ofResult(Integer code, String msg, T data, Exception exception) {
-        ResultModel<T> resultModel = new ResultModel<>();
-        resultModel.setCode(code);
-        resultModel.setMsg(msg);
-        resultModel.setData(data);
-        resultModel.setException(exception);
-        return resultModel;
-    }
-
-    public static <T> ResultModel<T> ofSuccess() {
-        return ofResult(200, "success", null);
-    }
-
-    public static <T> ResultModel<T> ofSuccess(T data) {
-        return ofResult(200, "success", data);
-    }
-
-    public static <T> ResultModel<T> ofSuccess(String msg, T data) {
-        return ofResult(200, msg, data);
-    }
-
-    public static <T> ResultModel<T> ofError() {
-        return ofResult(500, "error", null);
-    }
-
-    public static <T> ResultModel<T> ofError(String msg) {
-        return ofResult(500, msg, null);
-    }
-
-    public static <T> ResultModel<T> ofError(String msg, Exception exception) {
-        return ofResult(500, msg, null, exception);
+    public ResultModel(Exception exception, T data, String msg, Integer code) {
+        this.exception = exception;
+        this.data = data;
+        this.msg = msg;
+        this.code = code;
     }
 
     public Exception getException() {
@@ -77,5 +44,67 @@ public class ResultModel<T> {
 
     public void setCode(Integer code) {
         this.code = code;
+    }
+
+    public static <T> ResultModel<T> ofResult(Integer code, String msg, T data) {
+        ResultModel<T> result = new ResultModel<>();
+        result.setCode(code);
+        result.setMsg(msg);
+        result.setData(data);
+        return result;
+    }
+
+    public static <T> ResultModel<T> ofResult(Integer code, String msg, T data, Exception exception) {
+        ResultModel<T> result = new ResultModel<>();
+        result.setCode(code);
+        result.setMsg(msg);
+        result.setData(data);
+        result.setException(exception);
+        return result;
+    }
+
+    public static <T> ResultModel<T> ofSuccess() {
+        ResultModel<T> result = new ResultModel<>();
+        result.setCode(200);
+        result.setMsg("Success");
+        return result;
+    }
+
+    public static <T> ResultModel<T> ofSuccess(T data) {
+        ResultModel<T> result = new ResultModel<>();
+        result.setCode(200);
+        result.setMsg("Success");
+        result.setData(data);
+        return result;
+    }
+
+    public static <T> ResultModel<T> ofSuccess(String msg, T data) {
+        ResultModel<T> result = new ResultModel<>();
+        result.setCode(200);
+        result.setMsg(msg);
+        result.setData(data);
+        return result;
+    }
+
+    public static <T> ResultModel<T> ofError() {
+        ResultModel<T> result = new ResultModel<>();
+        result.setCode(500);
+        result.setMsg("Error");
+        return result;
+    }
+
+    public static <T> ResultModel<T> ofError(String msg) {
+        ResultModel<T> result = new ResultModel<>();
+        result.setCode(500);
+        result.setMsg(msg);
+        return result;
+    }
+
+    public static <T> ResultModel<T> ofError(String msg, Exception exception) {
+        ResultModel<T> result = new ResultModel<>();
+        result.setCode(500);
+        result.setMsg(msg);
+        result.setException(exception);
+        return result;
     }
 }
