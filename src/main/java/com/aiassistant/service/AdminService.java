@@ -1,0 +1,1 @@
+在`com.aiassistant.service.AdminService`文件中定义`updatePassword`方法
