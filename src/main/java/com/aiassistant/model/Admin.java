@@ -1,0 +1,1 @@
+在`com.aiassistant.model.Admin`文件中添加字段`encryptionMethod`

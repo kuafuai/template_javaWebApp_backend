@@ -1,0 +1,1 @@
+在`com.aiassistant.mapper.AdminMapper`文件中添加方法`updatePassword`

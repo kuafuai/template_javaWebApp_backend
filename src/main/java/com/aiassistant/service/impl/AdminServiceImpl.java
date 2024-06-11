@@ -1,0 +1,1 @@
+在`com.aiassistant.service.impl.AdminServiceImpl`文件中实现方法`updatePassword`

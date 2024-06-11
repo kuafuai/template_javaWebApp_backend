@@ -1,0 +1,1 @@
+在`com.aiassistant.controller.AdminController`文件中添加方法`updatePassword`
