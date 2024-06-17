@@ -1,33 +1,21 @@
 package com.aiassistant.service;
 
-import com.aiassistant.model.Demo;
+import com.aiassistant.model.AppMetrics;
+import com.aiassistant.model.PerformanceMetrics;
 import com.aiassistant.utils.ResultModel;
-import com.aiassistant.utils.ResultPageModel;
 
-/**
- * 业务逻辑层--demo Service
- */
+import java.util.List;
+
 public interface DemoService {
+    ResultModel<PerformanceMetrics> getPerformanceMetrics();
 
-    /**
-     * 添加一条Demo
-     *
-     * @param demo
-     */
-    ResultModel<Demo> addDemo(Demo demo);
+    ResultModel<Boolean> checkResourceUsage(String appName);
 
-    /**
-     * 获取所有
-     *
-     * @return
-     */
-    ResultPageModel<Demo> getDemoList();
+    ResultModel<List<AppMetrics>> getAppList();
 
-    /**
-     * 根据Id查询
-     *
-     * @param id
-     * @return
-     */
-    Demo getById(Integer id);
+    ResultModel<Void> setThreshold(int threshold);
+
+    ResultModel<Integer> getNetworkTraffic();
+
+    ResultModel<Integer> getDiskUsage();
 }
