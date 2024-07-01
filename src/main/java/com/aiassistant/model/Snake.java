@@ -1,0 +1,1 @@
+在`com.aiassistant.model.Snake`文件中定义`Snake`类：

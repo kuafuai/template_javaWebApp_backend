@@ -1,0 +1,1 @@
+在`com.aiassistant.service.SnakeService`文件中定义`SnakeService`接口：
