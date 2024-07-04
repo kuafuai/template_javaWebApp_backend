@@ -1,0 +1,1 @@
+Define Asset Registration Functionality Interface in com.github.service.AssetRegistrationService

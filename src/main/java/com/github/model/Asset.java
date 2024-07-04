@@ -1,0 +1,1 @@
+Create Asset Model Class com.github.model.Asset

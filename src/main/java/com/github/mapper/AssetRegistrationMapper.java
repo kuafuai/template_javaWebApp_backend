@@ -1,0 +1,1 @@
+Define Asset Registration Mapper Interface in com.github.mapper.AssetRegistrationMapper
