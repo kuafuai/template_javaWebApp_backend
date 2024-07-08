@@ -1,0 +1,1 @@
+在`com.aiassistant.mapper`包中定义`UserMapper`接口

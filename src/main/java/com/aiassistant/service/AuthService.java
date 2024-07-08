@@ -1,0 +1,1 @@
+在`com.aiassistant.service`包中定义`AuthService`接口
