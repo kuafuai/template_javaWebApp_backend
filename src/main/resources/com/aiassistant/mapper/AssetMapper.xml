@@ -1,1 +1,18 @@
-Define SQL Mapping for Asset Data Access
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aiassistant.mapper.AssetMapper">
+
+    <insert id="insertAsset" parameterType="com.aiassistant.model.Asset">
+        INSERT INTO asset (asset_id, name, specifications, purchase_date, purchase_price, asset_category)
+        VALUES (#{assetId}, #{name}, #{specifications}, #{purchaseDate}, #{purchasePrice}, #{assetCategory})
+    </insert>
+
+    <select id="selectByAssetId" parameterType="String" resultType="com.aiassistant.model.Asset">
+        SELECT asset_id, name, specifications, purchase_date, purchase_price, asset_category
+        FROM asset
+        WHERE asset_id = #{assetId}
+    </select>
+
+</mapper>
