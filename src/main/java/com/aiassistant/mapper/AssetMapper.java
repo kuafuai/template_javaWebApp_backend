@@ -1,0 +1,1 @@
+Define Asset Data Access Interface

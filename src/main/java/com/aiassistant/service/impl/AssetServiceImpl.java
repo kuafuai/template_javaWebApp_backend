@@ -1,0 +1,1 @@
+Implement Asset Service Interface
