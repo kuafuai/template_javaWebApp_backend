@@ -1,1 +1,9 @@
-在com.aiassistant.model包中定义LotteryEntry类
+package com.aiassistant.model;
+
+import lombok.Data;
+
+@Data
+public class LotteryEntry {
+    private String name;        // 中奖人员姓名
+    private String employeeId;  // 中奖人员工号
+}
