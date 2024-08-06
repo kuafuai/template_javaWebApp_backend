@@ -1,0 +1,1 @@
+在com.aiassistant.service包中定义LotteryService接口

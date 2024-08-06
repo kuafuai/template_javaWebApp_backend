@@ -1,0 +1,1 @@
+在com.aiassistant.model包中定义LotteryEntry类
